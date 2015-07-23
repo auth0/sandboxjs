@@ -1,0 +1,26 @@
+{
+  "name": "sandboxjs",
+  "version": "1.0.0",
+  "description": "Sandbox node.js code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/sandboxjs.git"
+  },
+  "keywords": [
+    "sandbox",
+    "node",
+    "js",
+    "untrusted",
+    "docker"
+  ],
+  "author": "Auth0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/auth0/sandboxjs/issues"
+  },
+  "homepage": "https://github.com/auth0/sandboxjs"
+}
