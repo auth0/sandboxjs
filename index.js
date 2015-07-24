@@ -87,8 +87,15 @@ Sandbox.prototype.createUrl = function (options, cb) {
 /**
  * Shortcut to create and run a Webtask from the given options
  */
-Sandbox.prototype.run = function (options, cb) {
-    var promise = this.create(options)
+Sandbox.prototype.run = function (fileOrUrl, options, cb) {
+    if (typeof options === 'function') {
+        cb = options;
+        options = {};
+    }
+    
+    if (!options) options = {};
+    
+    var promise = this.create(fileOrUrl, options)
         .call('run', options);
     
     return cb ? promise.nodeify(cb) : promise;
@@ -484,7 +491,7 @@ function Webtask (sandbox, token) {
  */
 Webtask.prototype.run = function (options, cb) {
     var config = _.defaultsDeep(options, {
-        method: 'GET',
+        method: 'get',
         path: '/',
         query: {},
     });

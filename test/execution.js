@@ -70,4 +70,15 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
             })
             .nodeify(done);
     });
+    
+    lab.test('can be used to run a webtask', function (done) {
+        var sandbox = Sandbox.fromProfile(); // Default profile used
+        
+        sandbox.run(googleTestCodeUrl)
+            .spread(function (res, body) {
+                expect(res.statusCode).to.be.at.least(200).and.below(300);
+                expect(body).to.match(/^\d+$/);
+            })
+            .nodeify(done);
+    });
 });
