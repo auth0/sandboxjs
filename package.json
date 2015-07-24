@@ -22,5 +22,19 @@
   "bugs": {
     "url": "https://github.com/auth0/sandboxjs/issues"
   },
-  "homepage": "https://github.com/auth0/sandboxjs"
+  "homepage": "https://github.com/auth0/sandboxjs",
+  "dependencies": {
+    "bluebird": "^2.9.34",
+    "boom": "^2.8.0",
+    "code": "^1.4.1",
+    "jsonwebtoken": "^5.0.4",
+    "lab": "^5.13.0",
+    "lodash": "^3.10.0",
+    "randexp": "^0.4.0",
+    "through2": "^2.0.0",
+    "wreck": "^6.0.0"
+  },
+  "devDependencies": {
+    "mock-fs": "^3.0.0"
+  }
 }
