@@ -4,7 +4,7 @@
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/lab -v"
   },
   "repository": {
     "type": "git",
