@@ -22,8 +22,6 @@ var _ = require('lodash');
  * @param {String} options.token - The JWT (see: http://jwt.io) issued by webtask.io that grants rights to run code in the indicated container
  */
 function Sandbox (options) {
-    if (!(this instanceof Sandbox)) return new Sandbox(options);
-    
     this.url = options.url;
     this.container = options.container;
     this.token = options.token;
@@ -42,7 +40,7 @@ function Sandbox (options) {
 /**
  * Create a Webtask from the given options
  */
-Sandbox.prototype.create = function (fileOrUrl, options, cb) {
+Sandbox.prototype.create = function (fileOrCodeOrUrl, options, cb) {
     if (typeof options === 'function') {
         cb = options;
         options = {};
@@ -50,12 +48,12 @@ Sandbox.prototype.create = function (fileOrUrl, options, cb) {
     
     if (!options) options = {};
     
-    var fol = fileOrUrl.toLowerCase();
+    var fol = fileOrCodeOrUrl.toLowerCase();
     
     if (fol.indexOf('http://') === 0 || fol.indexOf('https://') === 0) {
-        options.code_url = fileOrUrl;
-    } else {
-        var path = Path.resolve(process.cwd(), fileOrUrl);
+        options.code_url = fileOrCodeOrUrl;
+    } else if (fol.indexOf('.') === 0 || fol.indexOf('/') === 0) {
+        var path = Path.resolve(process.cwd(), fileOrCodeOrUrl);
 
         try {
             options.code = Fs.readFileSync(path, 'utf8');
@@ -63,6 +61,8 @@ Sandbox.prototype.create = function (fileOrUrl, options, cb) {
             throw new Error('Unable to read the file `'
                 + path + '`.');
         }
+    } else {
+        options.code = fileOrCodeOrUrl;
     }
     
     var self = this;
@@ -87,7 +87,7 @@ Sandbox.prototype.createUrl = function (options, cb) {
 /**
  * Shortcut to create and run a Webtask from the given options
  */
-Sandbox.prototype.run = function (fileOrUrl, options, cb) {
+Sandbox.prototype.run = function (fileOrCodeOrUrl, options, cb) {
     if (typeof options === 'function') {
         cb = options;
         options = {};
@@ -95,7 +95,7 @@ Sandbox.prototype.run = function (fileOrUrl, options, cb) {
     
     if (!options) options = {};
     
-    var promise = this.create(fileOrUrl, options)
+    var promise = this.create(fileOrCodeOrUrl, options)
         .call('run', options);
     
     return cb ? promise.nodeify(cb) : promise;
@@ -371,6 +371,50 @@ Sandbox.init = function (options) {
     });
     
     return new Sandbox(options);
+};
+
+Sandbox.create = function (fileOrCodeOrUrl, options, cb) {
+    if (typeof options === 'function') {
+        cb = options;
+        options = {};
+    }
+    
+    if (!options) options = {};
+    
+    var promise = Bluebird.try(Sandbox.fromProfile)
+        .call('create', fileOrCodeOrUrl, options);
+    
+    return cb ? promise.nodeify(cb) : promise;
+};
+
+Sandbox.createUrl = function (fileOrCodeOrUrl, options, cb) {
+    if (typeof options === 'function') {
+        cb = options;
+        options = {};
+    }
+    
+    if (!options) options = {};
+    
+    var promise = Bluebird.try(Sandbox.fromProfile)
+        .call('create', fileOrCodeOrUrl, options)
+        .get('url');
+    
+    return cb ? promise.nodeify(cb) : promise;
+};
+
+Sandbox.run = function (fileOrCodeOrUrl, options, cb) {
+    if (typeof options === 'function') {
+        cb = options;
+        options = {};
+    }
+    
+    if (!options) options = {};
+    
+    var promise = Bluebird.try(Sandbox.fromProfile)
+        .call('create', fileOrCodeOrUrl, options)
+        .call('run', options);
+    
+    return cb ? promise.nodeify(cb) : promise;
 };
 
 Sandbox.applyProfileToOptions = function (profile, options) {
