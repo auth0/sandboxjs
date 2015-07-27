@@ -98,7 +98,7 @@ Sandbox.prototype.run = function (fileOrCodeOrUrl, options, cb) {
     var promise = this.create(fileOrCodeOrUrl, options)
         .call('run', options);
     
-    return cb ? promise.nodeify(cb) : promise;
+    return cb ? promise.nodeify(cb, {spread: true}) : promise;
 };
 
 /**
@@ -414,7 +414,7 @@ Sandbox.run = function (fileOrCodeOrUrl, options, cb) {
         .call('create', fileOrCodeOrUrl, options)
         .call('run', options);
     
-    return cb ? promise.nodeify(cb) : promise;
+    return cb ? promise.nodeify(cb, {spread: true}) : promise;
 };
 
 Sandbox.applyProfileToOptions = function (profile, options) {
@@ -541,7 +541,7 @@ Webtask.prototype.run = function (options, cb) {
     });
     var promise = request(this._wreck, config.method, config.path, config.query, config.payload);
     
-    return cb ? promise.nodeify(cb) : promise;
+    return cb ? promise.nodeify(cb, {spread: true}) : promise;
 };
 
 

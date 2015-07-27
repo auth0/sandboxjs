@@ -69,6 +69,18 @@ lab.experiment('Sandbox helpers', {parallel: true, timeout: 10000}, function () 
             .nodeify(done);
     });
     
+    lab.test('can be used to run code with node-style callbacks', function (done) {
+        var code = 'module.exports = function (ctx, cb) { cb(null, ctx.data.id); }';
+        var query = {id: 'test'};
+        
+        Sandbox.run(code, {query: query}, function (err, res, body) {
+            expect(res.statusCode).to.be.at.least(200).and.below(300);
+            expect(body).to.equal(query.id);
+            
+            done(err);
+        });
+    });
+    
     lab.test('can be used to get a webtask url', function (done) {
         var code = 'module.exports = function (ctx, cb) { cb(null, ctx.data.id); }';
         
