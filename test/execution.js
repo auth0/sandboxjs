@@ -2,9 +2,7 @@ require('dotenv').load({ silent: true });
 
 var Bluebird = require('bluebird');
 var Code = require('code');
-var Jwt = require('jsonwebtoken');
 var Lab = require('lab');
-var Path = require('path');
 var Sandbox = require('../');
 var _ = require('lodash');
 

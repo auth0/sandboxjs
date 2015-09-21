@@ -1,9 +1,6 @@
-var Bluebird = require('bluebird');
 var Code = require('code');
 var Jwt = require('jsonwebtoken');
 var Lab = require('lab');
-var MockFs = require('mock-fs');
-var Path = require('path');
 var Sandbox = require('../');
 var _ = require('lodash');
 
