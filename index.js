@@ -1,12 +1,10 @@
-var Boom = require('boom');
 var Bluebird = require('bluebird');
-var Fs = require('fs');
 var Jwt = require('jsonwebtoken');
-var Path = require('path');
 var RandExp = require('randexp');
+var Superagent = require('superagent');
+var SuperagentDefaults = require('superagent-defaults');
+var SuperagentPrefix = require('superagent-prefix');
 var Through = require('through2');
-var Url = require('url');
-var Wreck = require('wreck');
 var _ = require('lodash');
 
 
@@ -25,22 +23,18 @@ function Sandbox (options) {
     this.url = options.url;
     this.container = options.container;
     this.token = options.token;
-
-    Object.defineProperty(this, '_wreck', {
-        value: Wreck.defaults({
-            baseUrl: this.url,
-            headers: {
-                'Authorization': 'Bearer ' + this.token,
-            },
-            json: true,
-        })
-    });
 }
 
 /**
  * Create a Webtask from the given options
+ *
+ * @method create
+ * @param {String} [codeOrUrl] - The code for the webtask or a url starting with http:// or https://
+ * @param {Object} [options] - Options for creating the webtask
+ * @param {Function} [cb] - Optional callback function for node-style callbacks
+ * @returns {Promise} A Promise that will be fulfilled with the token
  */
-Sandbox.prototype.create = function (fileOrCodeOrUrl, options, cb) {
+Sandbox.prototype.create = function (codeOrUrl, options, cb) {
     if (typeof options === 'function') {
         cb = options;
         options = {};
@@ -48,21 +42,12 @@ Sandbox.prototype.create = function (fileOrCodeOrUrl, options, cb) {
 
     if (!options) options = {};
 
-    var fol = fileOrCodeOrUrl.toLowerCase();
+    var fol = codeOrUrl.toLowerCase();
 
     if (fol.indexOf('http://') === 0 || fol.indexOf('https://') === 0) {
-        options.code_url = fileOrCodeOrUrl;
-    } else if (fol.indexOf('.') === 0 || fol.indexOf('/') === 0) {
-        var path = Path.resolve(process.cwd(), fileOrCodeOrUrl);
-
-        try {
-            options.code = Fs.readFileSync(path, 'utf8');
-        } catch (e) {
-            throw new Error('Unable to read the file `'
-                + path + '`.');
-        }
+        options.code_url = codeOrUrl;
     } else {
-        options.code = fileOrCodeOrUrl;
+        options.code = codeOrUrl;
     }
 
     var self = this;
@@ -76,6 +61,11 @@ Sandbox.prototype.create = function (fileOrCodeOrUrl, options, cb) {
 
 /**
  * Shortcut to create a Webtask and get its url from the given options
+ *
+ * @method createUrl
+ * @param {Object} options - Options for creating the webtask
+ * @param {Function} [cb] - Optional callback function for node-style callbacks
+ * @returns {Promise} A Promise that will be fulfilled with the token
  */
 Sandbox.prototype.createUrl = function (options, cb) {
     var promise = this.create(options)
@@ -86,8 +76,14 @@ Sandbox.prototype.createUrl = function (options, cb) {
 
 /**
  * Shortcut to create and run a Webtask from the given options
+ *
+ * @method run
+ * @param {String} [codeOrUrl] - The code for the webtask or a url starting with http:// or https://
+ * @param {Object} [options] - Options for creating the webtask
+ * @param {Function} [cb] - Optional callback function for node-style callbacks
+ * @returns {Promise} A Promise that will be fulfilled with the token
  */
-Sandbox.prototype.run = function (fileOrCodeOrUrl, options, cb) {
+Sandbox.prototype.run = function (codeOrUrl, options, cb) {
     if (typeof options === 'function') {
         cb = options;
         options = {};
@@ -95,7 +91,7 @@ Sandbox.prototype.run = function (fileOrCodeOrUrl, options, cb) {
 
     if (!options) options = {};
 
-    var promise = this.create(fileOrCodeOrUrl, options)
+    var promise = this.create(codeOrUrl, options)
         .call('run', options);
 
     return cb ? promise.nodeify(cb, {spread: true}) : promise;
@@ -114,7 +110,6 @@ Sandbox.prototype.createToken = function (options, cb) {
 
     var self = this;
     var promise = new Bluebird(function (resolve, reject) {
-
         var params = {
             ten: options.container || self.container,
             dd: options.issuanceDepth || 0,
@@ -155,14 +150,13 @@ Sandbox.prototype.createToken = function (options, cb) {
             return reject(err);
         }
 
-        var promise = request(self._wreck, 'post', '/api/tokens/issue', {}, params)
-            .spread(function (res, token) {
-                return token.toString('utf8');
-            });
+        var request = Superagent
+            .post(self.url + '/api/tokens/issue')
+            .set('Authorization', 'Bearer ' + self.token)
+            .send(params);
 
-        return cb
-            ? resolve(promise.nodeify(cb))
-            : resolve(promise);
+        return resolve(issueRequest(request)
+                .get('text'));
 
         function addLimits(limits, spec) {
             for (var l in limits) {
@@ -203,125 +197,148 @@ Sandbox.prototype.createLogStream = function (options, cb) {
     var self = this;
 
     var promise = new Bluebird(function (resolve, reject) {
-        var url = '/api/logs/tenant/' + (options.container || self.container);
-        var reqOptions = {
-            headers: { 'accept': 'text/event-stream' },
-        };
+        var request = Superagent
+            .get(self.url + '/api/logs/tenant/' + (options.container || self.container))
+            .set('Authorization', 'Bearer ' + self.token)
+            .accept('text/event-stream');
 
-        self._wreck.request('get', url, reqOptions, function (err, res) {
-            if (err) return reject(err.isBoom ? err : Boom.wrap(err, 502,
-                'Error communicating with webtask cluster: ' + err.message));
-
-            if (res.statusCode >= 400) {
-                // Error response from webtask cluster
-                return reject(Boom.create(res.statusCode,
-                    'Error returned by webtask cluster: ' + res.statusCode));
-            } else if (res.statusCode >= 300) {
-                // Unresolved redirect from webtask cluster
-                return reject(Boom.create(502,
-                    'Unexpected response-type from webtask cluster: '
-                    + err.message));
-            }
-
-            var lastId = '';
-            var eventName = '';
-            var eventData = '';
-
-            // Straight mapping right now.
-            var logMapper = Through.obj(function (chunk, enc, callback) {
-                // For parsing this, see: http://www.w3.org/TR/2009/WD-eventsource-20091029/#event-stream-interpretation
-                var data = chunk.toString('utf8');
-                var events = data.split(/\n\n/);
-
-                _.forEach(events, function (event) {
-                    if (!event) {
-                        this.push({
-                            id: lastId,
-                            type: eventName || 'data',
-                            data: eventData.slice(0, -1), // Strip trailing \n
-                        });
-
-                        eventName = '';
-                        eventData = '';
-
-                        return;
-                    }
-
-                    var lines = event.split('\n').filter(Boolean);
-
-                    _.forEach(lines, function (line) {
-                        // This marks the end of an event
-                        var matches = line.match(/^([^:]*):(.*)$/);
-
-                        if (matches) {
-                            var field = matches[1];
-                            var value = matches[2];
-
-                            if (!field) return; // event-source comment
-                            if (field === 'event') eventName = value;
-                            else if (field === 'data') eventData += value + '\n';
-                            else if (field === 'id') lastId = value;
-                        }
-                    }, this);
-                }, this);
-
-                callback();
-            });
-
-            var logStream = res
-                .pipe(logMapper);
-
-            resolve(logStream);
+        request.once('error', function (err) {
+            if (err.response) return reject(createResponseError(err.response));
+            else return reject(new Error('Error streaming logs: ' + err.message));
         });
+
+        var lastId = '';
+        var eventName = '';
+        var eventData = '';
+        var eventBuffer = '';
+
+        // Accumulate data until the end of a block (two newlines)
+        var logMapper = Through(function (chunk, enc, callback) {
+            var data = chunk.toString('utf8');
+            var events = data.split('\n\n');
+
+            _.forEach(events, function (event) {
+                if (!event) {
+                    this.push(eventBuffer);
+                    eventBuffer = '';
+                } else {
+                    eventBuffer += event;
+                }
+            }, this);
+
+            callback();
+        });
+
+        // Parse blocks and emit json objects
+        var logParser = Through.obj(function (chunk, enc, callback) {
+            // For parsing this, see: http://www.w3.org/TR/2009/WD-eventsource-20091029/#event-stream-interpretation
+            var event = chunk.toString('utf8');
+            var lines = event.split('\n');
+
+            _.forEach(lines, function (line) {
+                var matches = line.match(/^([^:]*):(.*)$/);
+
+                if (matches) {
+                    var field = matches[1];
+                    var value = matches[2];
+
+                    if (!field) return; // event-source comment
+                    if (field === 'event') eventName = value;
+                    else if (field === 'data') eventData += value;
+                    else if (field === 'id') lastId = value;
+                } else {
+                    // console.log('unexpected data', line);
+                }
+            }, this);
+
+            var eventObj = {
+                id: lastId,
+                type: eventName || 'data',
+                data: eventData,
+            };
+
+            lastId = '';
+            eventName = '';
+            eventData = '';
+
+            this.push(eventObj);
+
+            callback();
+        });
+
+        var logStream = request
+            .pipe(logMapper)
+            .pipe(logParser);
+
+        resolve(logStream);
     });
 
     return cb ? promise.nodify(cb) : promise;
 };
 
 Sandbox.prototype.createCronJob = function (options, cb) {
-    var url = '/api/cron/' + options.container + '/' + options.name;
-    var promise = request(this._wreck, 'put', url, {}, {
-        token: options.token,
-        schedule: options.schedule,
-    })
-        .get(1); // Return the job
+    var request = Superagent
+        .put(this.url + '/api/cron/' + options.container + '/' + options.name)
+        .set('Authorization', 'Bearer ' + this.token)
+        .send({
+            token: options.token,
+            schedule: options.schedule,
+        })
+        .accept('json');
+
+    var promise = issueRequest(request)
+            .get('body');
 
     return cb ? promise.nodeify(cb) : promise;
 };
 
 Sandbox.prototype.removeCronJob = function (options, cb) {
-    var url = '/api/cron/' + options.container + '/' + options.name;
-    var promise = request(this._wreck, 'delete', url)
-        .get(1); // Return the job
+    var request = Superagent
+        .del(this.url + '/api/cron/' + options.container + '/' + options.name)
+        .set('Authorization', 'Bearer ' + this.token)
+        .accept('json');
+
+    var promise = issueRequest(request)
+            .get('body');
 
     return cb ? promise.nodeify(cb) : promise;
 };
 
 Sandbox.prototype.listCronJobs = function (options, cb) {
-    var url = '/api/cron/' + options.container;
-    var promise = request(this._wreck, 'get', url)
-        .get(1); // Return the job array
+    var request = Superagent
+        .get(this.url + '/api/cron/' + options.container)
+        .set('Authorization', 'Bearer ' + this.token)
+        .accept('json');
+
+    var promise = issueRequest(request)
+            .get('body');
 
     return cb ? promise.nodeify(cb) : promise;
 };
 
 Sandbox.prototype.getCronJob = function (options, cb) {
-    var url = '/api/cron/' + options.container + '/' + options.name;
-    var promise = request(this._wreck, 'get', url)
-        .get(1); // Return the job
+    var request = Superagent
+        .get(this.url + '/api/cron/' + options.container + '/' + options.name)
+        .set('Authorization', 'Bearer ' + this.token)
+        .accept('json');
+
+    var promise = issueRequest(request)
+            .get('body');
 
     return cb ? promise.nodeify(cb) : promise;
 };
 
 Sandbox.prototype.getCronJobHistory = function (options, cb) {
-    var url = '/api/cron/' + options.container + '/' + options.name + '/history';
-    var query = {};
+    var request = Superagent
+        .get(this.url + '/api/cron/' + options.container + '/' + options.name + '/history')
+        .set('Authorization', 'Bearer ' + this.token)
+        .accept('json');
 
-    if (options.offset) query.offset = options.offset;
-    if (options.limit) query.limit = options.limit;
+    if (options.offset) request.query({offset: options.offset});
+    if (options.limit) request.query({limit: options.limit});
 
-    var promise = request(this._wreck, 'get', url, query)
-        .get(1); // Return the job history
+    var promise = issueRequest(request)
+        .get('body');
 
     return cb ? promise.nodeify(cb) : promise;
 };
@@ -345,15 +362,6 @@ Sandbox.limits = {
     },
 };
 
-Sandbox.fromProfile = function (profile, options) {
-    if (!profile) profile = 'default';
-    if (!options) options = {};
-
-    Sandbox.applyProfileToOptions(profile, options);
-
-    return Sandbox.init(options);
-};
-
 Sandbox.fromToken = function (token) {
     var options = Sandbox.optionsFromJwt(token);
 
@@ -371,74 +379,6 @@ Sandbox.init = function (options) {
     });
 
     return new Sandbox(options);
-};
-
-Sandbox.create = function (fileOrCodeOrUrl, options, cb) {
-    if (typeof options === 'function') {
-        cb = options;
-        options = {};
-    }
-
-    if (!options) options = {};
-
-    var promise = Bluebird.try(Sandbox.fromProfile)
-        .call('create', fileOrCodeOrUrl, options);
-
-    return cb ? promise.nodeify(cb) : promise;
-};
-
-Sandbox.createUrl = function (fileOrCodeOrUrl, options, cb) {
-    if (typeof options === 'function') {
-        cb = options;
-        options = {};
-    }
-
-    if (!options) options = {};
-
-    var promise = Bluebird.try(Sandbox.fromProfile)
-        .call('create', fileOrCodeOrUrl, options)
-        .get('url');
-
-    return cb ? promise.nodeify(cb) : promise;
-};
-
-Sandbox.run = function (fileOrCodeOrUrl, options, cb) {
-    if (typeof options === 'function') {
-        cb = options;
-        options = {};
-    }
-
-    if (!options) options = {};
-
-    var promise = Bluebird.try(Sandbox.fromProfile)
-        .call('create', fileOrCodeOrUrl, options)
-        .call('run', options);
-
-    return cb ? promise.nodeify(cb, {spread: true}) : promise;
-};
-
-Sandbox.applyProfileToOptions = function (profile, options) {
-    if (!options.configPath) {
-        var homePath = process.env[(process.platform == 'win32')
-                ? 'USERPROFILE'
-                : 'HOME'
-            ];
-        options.configPath = Path.join(homePath, '.webtask');
-    }
-
-    var defaults = {};
-
-    try {
-        var config = Fs.readFileSync(options.configPath, 'utf8');
-        var profiles = JSON.parse(config);
-
-        defaults = profiles[profile];
-    } catch (__) {
-        throw new Error('Unable to load the profile `' + profile + '` from '
-            + 'the config file `' + options.configPath + '`.');
-    }
-
-    return _.defaults(options, defaults);
 };
 
 Sandbox.optionsFromJwt = function (jwt) {
@@ -488,7 +428,6 @@ Sandbox.optionsFromJwt = function (jwt) {
  */
 function Webtask (sandbox, token) {
     var claims = Jwt.decode(token);
-    var headers = {};
 
     this.sandbox = sandbox;
     this.token = token;
@@ -517,17 +456,11 @@ function Webtask (sandbox, token) {
         }
     });
 
-    if (!claims.jtn) {
-        headers['Authorization'] = 'Bearer ' + this.token;
-    }
-
-    Object.defineProperty(this, '_wreck', {
-        value: Wreck.defaults({
-            baseUrl: this.url,
-            headers: headers,
-            json: true,
-        })
-    });
+    this.authenticate = function (request) {
+        return claims.jtn
+            ? request
+            : request.set('Authorization', 'Bearer ' + this.token);
+    };
 }
 
 /**
@@ -543,59 +476,44 @@ Webtask.prototype.run = function (options, cb) {
         path: '/',
         query: {},
     });
-    var promise = request(this._wreck, config.method, config.path, config.query, config.payload);
+
+    var request = Superagent
+        [config.method](this.url + config.path)
+        .query(config.query);
+
+    if (config.payload) request = request.send(config.payload);
+
+    var promise = issueRequest(this.authenticate(request));
 
     return cb ? promise.nodeify(cb, {spread: true}) : promise;
 };
 
 
-function request (wreck, method, path, query, payload, options) {
-    if (!options) options = {};
+function issueRequest (request) {
+    return Bluebird.resolve(request)
+        .catch(function (err) {
+            throw new Error('Error communicating with the webtask cluster: '
+                + err.message);
+        })
+        .then(function (res) {
+            if (res.error) throw createResponseError(res);
 
-    _.defaultsDeep(options, {
-        headers: {},
-    });
+            // Api compatibility
+            res.statusCode = res.status;
 
-    var url = Url.parse(path, true);
-    _.extend(url.query, query);
-    delete url.search;
-    path = Url.format(url);
-
-    if (payload) {
-        options.payload = payload;
-
-        // Not supporting streams for now
-        if (!_.isString(payload) && !Buffer.isBuffer(payload)) {
-            options.payload = JSON.stringify(payload);
-            options.headers['content-type'] = 'application/json';
-        }
-    }
-
-    if (!wreck) throw new Boom.badImplementation('Missing wreck instance.');
-    if (!wreck[method])
-        throw new Boom.badImplementation('Invalid request method: ' + method);
-
-    return new Bluebird(function (resolve, reject) {
-        wreck[method](path, options, function (err, res, body) {
-            if (err) return reject(err.isBoom ? err : Boom.wrap(err, 502,
-                'Error communicating with webtask cluster: ' + err.message));
-
-            if (res.statusCode >= 400) {
-                // Error response from webtask cluster
-                return reject(Boom.create(res.statusCode,
-                    'Error returned by webtask cluster: ' + JSON.stringify(body, null, 2)),
-                    Buffer.isBuffer(body) ? body.toString() : body);
-            } else if (res.statusCode >= 300) {
-                // Unresolved redirect from webtask cluster
-                return reject(Boom.create(502,
-                    'Unexpected response-type from webtask cluster: '
-                    + err.message));
-            }
-
-            resolve([res, body]);
+            return res;
         });
-    });
 }
 
+function createResponseError (res) {
+    if (res.clientError) return new Error('Unexpected response-type from '
+        + 'webtask cluster: ' + res.body && res.body.message
+            ? res.body.message
+            : res.text);
+    if (res.serverError) return new Error('Error returned by webtask '
+        + 'cluster: ' + res.body && res.body.message
+            ? res.body.message
+            : res.text);
+}
 
 module.exports = Sandbox;

@@ -25,16 +25,18 @@
   "homepage": "https://github.com/auth0/sandboxjs",
   "dependencies": {
     "bluebird": "^2.9.34",
-    "boom": "^2.8.0",
-    "code": "^1.4.1",
     "jsonwebtoken": "^5.0.4",
-    "lab": "^5.13.0",
     "lodash": "^3.10.0",
     "randexp": "^0.4.0",
-    "through2": "^2.0.0",
-    "wreck": "^6.0.0"
+    "superagent": "^1.4.0",
+    "superagent-defaults": "^0.1.13",
+    "superagent-prefix": "0.0.2",
+    "through2": "^2.0.0"
   },
   "devDependencies": {
+    "code": "^1.5.0",
+    "dotenv": "^1.2.0",
+    "lab": "^5.17.0",
     "mock-fs": "^3.0.0"
   }
 }
