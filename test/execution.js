@@ -4,6 +4,7 @@ var Bluebird = require('bluebird');
 var Code = require('code');
 var Lab = require('lab');
 var Sandbox = require('../');
+var Url = require('url');
 var _ = require('lodash');
 
 var lab = exports.lab = Lab.script();
@@ -70,9 +71,14 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
             sandbox.create(googleTestCodeUrl),
             sandbox.create(googleTestCodeUrl, tokenOptions),
             function (webtask1, webtask2) {
+                var url1 = Url.parse(webtask1.url, true);
+                var url2 = Url.parse(webtask2.url, true);
+
                 expect(webtask1.url).to.match(/^https:\/\//);
                 expect(webtask2.url).to.match(/^https:\/\//);
-                expect(webtask1.url + '/' + tokenOptions.name).to.equal(webtask2.url);
+                expect(url1.pathname + '/' + tokenOptions.name).to.equal(url2.pathname);
+                expect(url1.query.key).to.be.a.string();
+                expect(url2.query.key).to.not.exist();
             })
             .nodeify(done);
     });
