@@ -117,4 +117,30 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
             })
             .nodeify(done);
     });
+
+    lab.test('4XX errors do not reject promises', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var code = 'module.exports = function (ctx, req, res) { res.writeHead(404); res.end(); }';
+
+        sandbox.run(code)
+            .then(function (res, body) {
+                expect(res.statusCode).to.equal(404);
+                expect(res.clientError).to.equal(true);
+                expect(res.serverError).to.equal(false);
+            })
+            .nodeify(done);
+    });
+
+    lab.test('5XX errors do not reject promises', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var code = 'module.exports = function (ctx, req, res) { res.writeHead(500); res.end(); }';
+
+        sandbox.run(code)
+            .then(function (res, body) {
+                expect(res.statusCode).to.equal(500);
+                expect(res.clientError).to.equal(false);
+                expect(res.serverError).to.equal(true);
+            })
+            .nodeify(done);
+    });
 });
