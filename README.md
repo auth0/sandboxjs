@@ -34,22 +34,7 @@ Sandbox.run(code, function (err, res, body) {
 });
 ```
 
-## API
-
-### Sandbox.run(fileOrCodeOrUrl, [options], [cb])
-
-Runs the code at the given path, url or exactly as passed in.
-
-If `fileOrCodeOrUrl` starts with `http://` or `https://` it is considered a url. If it starts with `.` or `/`, it is considered a path. Otherwise, it is treated as plain code.
-
-Here, `options` supports the following properties:
-
-* `method:` - The HTTP method that will be used to invoke the sandboxed code. Defaults to `get`.
-* `query:` - A hash of query parameters that you would like passed to the sandboxed code.
-* `payload:` - A string, Buffer or JSON object that will be passed as the payload on a `put` or `post` request to the sandboxed code.
-* `handler:` - A function that will be invoked with the parsed `argv` object.
-
-`cb` is an optional node-style callback to be invoked upon completion.
+For more detailed usage, see [the docs.](docs.md)
 
 ## Usages
 
@@ -60,7 +45,7 @@ This library will be used in [wt-cli](https://github.com/auth0/wt-cli).
 Just clone the repo, run `npm install` and then hack away.
 
 ## Issue reporting
-
+ 
 If you have found a bug or if you have a feature request, please report them at
 this repository issues section. Please do not report security vulnerabilities on
 the public GitHub issue tracker. The 
@@ -68,11 +53,11 @@ the public GitHub issue tracker. The
 procedure for disclosing security issues.
 
 ## License
-
+ 
 MIT
 
 ## What is Auth0?
-
+ 
 Auth0 helps you to:
 
 * Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, amont others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
@@ -83,7 +68,7 @@ Auth0 helps you to:
 * Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
 
 ## Create a free account in Auth0
-
+ 
 1. Go to [Auth0](https://auth0.com) and click Sign Up.
 2. Use Google, GitHub or Microsoft Account to login.
 3. 
