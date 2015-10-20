@@ -5,7 +5,6 @@ var Code = require('code');
 var Lab = require('lab');
 var Sandbox = require('../');
 var Url = require('url');
-var _ = require('lodash');
 
 var lab = exports.lab = Lab.script();
 var expect = Code.expect;

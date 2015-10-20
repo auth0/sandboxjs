@@ -2,7 +2,6 @@ var Code = require('code');
 var Jwt = require('jsonwebtoken');
 var Lab = require('lab');
 var Sandbox = require('../');
-var _ = require('lodash');
 
 var lab = exports.lab = Lab.script();
 var expect = Code.expect;
