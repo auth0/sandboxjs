@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "gendocs": "jsdoc2md lib/index.js > docs.md",
     "test": "lab -v"
   },
   "repository": {
@@ -39,6 +40,7 @@
   "devDependencies": {
     "code": "^1.5.0",
     "dotenv": "^1.2.0",
+    "jsdoc-to-markdown": "^1.2.0",
     "lab": "^5.17.0"
   }
 }
