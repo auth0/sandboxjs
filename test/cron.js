@@ -27,18 +27,18 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
         done();
     });
     
-    lab.test('creation will throw if a named webtask is not used', function (done) {
+    lab.test('creation will throw if a name cannot be derived', function (done) {
         var sandbox = Sandbox.init(sandboxParams);
         var resolved = false;
 
-        sandbox.create(googleTestCodeUrl)
-            .call('createCronJob', '* * * * *')
+        sandbox.create('https://example.com')
+            .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
                 resolved = true;
             })
             .catch(function (err) {
                 expect(err).to.be.an.instanceOf(Error);
-                expect(err.message).to.equal('Cron jobs can only be created from named webtasks.');
+                expect(err.message).to.match(/job.*name/);
             })
             .finally(function () {
                 expect(resolved).to.equal(false);
@@ -51,7 +51,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
         var jobName = 'sandboxjs-test';
 
         sandbox.create(googleTestCodeUrl, { name: jobName })
-            .call('createCronJob', '* * * * *')
+            .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
                 expect(job).to.be.an.instanceOf(Sandbox.CronJob);
                 expect(job.cluster_url).to.equal(sandbox.url);
@@ -75,7 +75,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
         var jobName = 'sandboxjs-test';
 
         sandbox.create(googleTestCodeUrl, { name: jobName })
-            .call('createCronJob', '* * * * *')
+            .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
                 var found = false;
                 

@@ -387,7 +387,7 @@ Get the historical results of executions of an existing cron job.
   * [.token](#Webtask+token)
   * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
   * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
-  * [.createCronJob(schedule, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
+  * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
 ### new Webtask()
@@ -447,7 +447,7 @@ Run the webtask and return the result of execution
 | [cb] | <code>function</code> | Optional node-style callback that will be invoked upon completion |
 
 <a name="Webtask+createCronJob"></a>
-### webtask.createCronJob(schedule, [cb]) ⇒ <code>Promise</code>
+### webtask.createCronJob(options, [cb]) ⇒ <code>Promise</code>
 Schedule the webtask to run periodically
 
 **Kind**: instance method of <code>[Webtask](#Webtask)</code>  
@@ -455,7 +455,9 @@ Schedule the webtask to run periodically
 
 | Param | Type | Description |
 | --- | --- | --- |
-| schedule | <code>String</code> | Cron-string-formatted schedule |
+| options | <code>Object</code> | Options for creating the webtask |
+| options.schedule | <code>Object</code> | Cron-string-formatted schedule |
+| [options.name] | <code>Object</code> | The name for the cron job |
 | [cb] | <code>function</code> | Optional node-style callback that will be invoked upon completion |
 
 
