@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "gendocs": "jsdoc2md lib/index.js > docs.md",
+    "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo",
     "test": "lab -v"
   },
   "repository": {
