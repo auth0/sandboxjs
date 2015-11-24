@@ -31,6 +31,9 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
         var sandbox = Sandbox.init(sandboxParams);
         var resolved = false;
 
+        // Because there is no pathname to this url, no cron job name can be
+        // automatically derived. As a result, Webtask#createCronJob will
+        // throw.
         sandbox.create('https://example.com')
             .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
