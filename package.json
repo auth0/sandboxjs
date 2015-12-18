@@ -35,6 +35,7 @@
     "lodash.foreach": "^3.0.3",
     "lodash.get": "^3.7.0",
     "randexp": "^0.4.0",
+    "reconnect-core": "^1.1.0",
     "superagent": "^1.4.0"
   },
   "devDependencies": {
