@@ -36,6 +36,7 @@
     "lodash.get": "^3.7.0",
     "randexp": "^0.4.0",
     "reconnect-core": "^1.1.0",
+    "streamify": "^0.2.5",
     "superagent": "^1.4.0"
   },
   "devDependencies": {
