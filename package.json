@@ -27,7 +27,7 @@
   "homepage": "https://github.com/auth0/sandboxjs",
   "dependencies": {
     "bluebird": "^2.9.34",
-    "event-source-stream": "^1.3.2",
+    "event-source-stream": "ggoodman/event-source-stream",
     "jwt-decode": "^1.4.0",
     "lodash.assign": "^3.2.0",
     "lodash.defaults": "^3.1.2",
