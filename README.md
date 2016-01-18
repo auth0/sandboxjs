@@ -554,7 +554,7 @@ Schedule the webtask to run periodically
 Inspect an existing webtask to optionally get code and/or secrets
 
 **Kind**: instance method of <code>[Webtask](#Webtask)</code>  
-**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an Array of cron job results.  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of inspecting the token.  
 
 | Param | Type | Description |
 | --- | --- | --- |
