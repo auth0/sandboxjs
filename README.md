@@ -349,6 +349,7 @@ Inspect an existing webtask token to resolve code and/or secrets
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options for inspecting the webtask. |
+| options.token | <code>Boolean</code> | The token that you would like to inspect. |
 | [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
 | [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
@@ -559,8 +560,9 @@ Inspect an existing webtask to optionally get code and/or secrets
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options for inspecting the webtask. |
-| [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
+| options.token | <code>Boolean</code> | The token that you would like to inspect. |
 | [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
+| [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 
