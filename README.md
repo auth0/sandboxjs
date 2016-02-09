@@ -362,7 +362,6 @@ Inspect an existing webtask token to resolve code and/or secrets
   * [new CronJob()](#new_CronJob_new)
   * [.claims](#CronJob+claims)
   * [.sandbox](#CronJob+sandbox)
-  * [.cluster_url](#CronJob+cluster_url)
   * [.refresh([cb])](#CronJob+refresh) ⇒ <code>Promise</code>
   * [.remove([cb])](#CronJob+remove) ⇒ <code>Promise</code>
   * [.getHistory(options, [cb])](#CronJob+getHistory) ⇒ <code>Promise</code>
@@ -390,15 +389,6 @@ Creates an object representing a CronJob
 | Name | Description |
 | --- | --- |
 | sandbox | The {@see Sandbox} instance used to create this Webtask instance |
-
-<a name="CronJob+cluster_url"></a>
-### cronJob.cluster_url
-**Kind**: instance property of <code>[CronJob](#CronJob)</code>  
-**Properties**
-
-| Name | Description |
-| --- | --- |
-| cluster_url | The url of the webtask cluster on which this job will run |
 
 <a name="CronJob+refresh"></a>
 ### cronJob.refresh([cb]) ⇒ <code>Promise</code>
