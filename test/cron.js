@@ -57,7 +57,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
             .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
                 expect(job).to.be.an.instanceOf(Sandbox.CronJob);
-                expect(job.cluster_url).to.equal(sandbox.url);
+                expect(job.sandbox.url).to.equal(sandbox.url);
                 expect(job.name).to.equal(jobName);
             })
             .tap(function (job) {
@@ -83,7 +83,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
                 var found = false;
                 
                 expect(job).to.be.an.instanceOf(Sandbox.CronJob);
-                expect(job.cluster_url).to.equal(sandbox.url);
+                expect(job.sandbox.url).to.equal(sandbox.url);
                 expect(job.name).to.equal(jobName);
                 
                 return Bluebird.join(job, sandbox.listCronJobs(), function (created, jobs) {
