@@ -62,44 +62,49 @@ profile.create(code, { secrets: { auth0: 'rocks' } }, function (err, webtask) {
 ## API
 
 ## Modules
+
 <dl>
 <dt><a href="#module_sandboxjs">sandboxjs</a></dt>
 <dd><p>Sandbox node.js code.</p>
 </dd>
 </dl>
+
 ## Classes
+
 <dl>
 <dt><a href="#CronJob">CronJob</a></dt>
 <dd></dd>
 <dt><a href="#Webtask">Webtask</a></dt>
 <dd></dd>
 </dl>
+
 <a name="module_sandboxjs"></a>
 ## sandboxjs
 Sandbox node.js code.
 
 
 * [sandboxjs](#module_sandboxjs)
-  * _static_
-    * [.fromToken(token, options)](#module_sandboxjs.fromToken) ⇒ <code>Sandbox</code>
-    * [.init(options)](#module_sandboxjs.init) ⇒ <code>Sandbox</code>
-  * _inner_
-    * [~Sandbox](#module_sandboxjs..Sandbox)
-      * [new Sandbox(options)](#new_module_sandboxjs..Sandbox_new)
-      * [.create([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+create) ⇒ <code>Promise</code>
-      * [.createRaw(claims, [cb])](#module_sandboxjs..Sandbox+createRaw) ⇒ <code>Promise</code>
-      * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
-      * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
-      * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
-      * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
-      * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
-      * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
-      * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
-      * [.setCronJobState(options, [cb])](#module_sandboxjs..Sandbox+setCronJobState) ⇒ <code>Promise</code>
-      * [.listCronJobs([options], [cb])](#module_sandboxjs..Sandbox+listCronJobs) ⇒ <code>Promise</code>
-      * [.getCronJob(options, [cb])](#module_sandboxjs..Sandbox+getCronJob) ⇒ <code>Promise</code>
-      * [.getCronJobHistory(options, [cb])](#module_sandboxjs..Sandbox+getCronJobHistory) ⇒ <code>Promise</code>
-      * [.inspectToken(options, [cb])](#module_sandboxjs..Sandbox+inspectToken) ⇒ <code>Promise</code>
+    * _static_
+        * [.fromToken(token, options)](#module_sandboxjs.fromToken) ⇒ <code>Sandbox</code>
+        * [.init(options)](#module_sandboxjs.init) ⇒ <code>Sandbox</code>
+    * _inner_
+        * [~Sandbox](#module_sandboxjs..Sandbox)
+            * [new Sandbox(options)](#new_module_sandboxjs..Sandbox_new)
+            * [.create([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+create) ⇒ <code>Promise</code>
+            * [.createRaw(claims, [cb])](#module_sandboxjs..Sandbox+createRaw) ⇒ <code>Promise</code>
+            * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
+            * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
+            * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
+            * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
+            * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
+            * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
+            * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
+            * [.setCronJobState(options, [cb])](#module_sandboxjs..Sandbox+setCronJobState) ⇒ <code>Promise</code>
+            * [.listCronJobs([options], [cb])](#module_sandboxjs..Sandbox+listCronJobs) ⇒ <code>Promise</code>
+            * [.getCronJob(options, [cb])](#module_sandboxjs..Sandbox+getCronJob) ⇒ <code>Promise</code>
+            * [.getCronJobHistory(options, [cb])](#module_sandboxjs..Sandbox+getCronJobHistory) ⇒ <code>Promise</code>
+            * [.inspectToken(options, [cb])](#module_sandboxjs..Sandbox+inspectToken) ⇒ <code>Promise</code>
+            * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
 ### Sandbox.fromToken(token, options) ⇒ <code>Sandbox</code>
@@ -134,7 +139,7 @@ Create a Sandbox instance
 ### Sandbox~Sandbox
 **Kind**: inner class of <code>[sandboxjs](#module_sandboxjs)</code>  
 
-  * [~Sandbox](#module_sandboxjs..Sandbox)
+* [~Sandbox](#module_sandboxjs..Sandbox)
     * [new Sandbox(options)](#new_module_sandboxjs..Sandbox_new)
     * [.create([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+create) ⇒ <code>Promise</code>
     * [.createRaw(claims, [cb])](#module_sandboxjs..Sandbox+createRaw) ⇒ <code>Promise</code>
@@ -150,6 +155,7 @@ Create a Sandbox instance
     * [.getCronJob(options, [cb])](#module_sandboxjs..Sandbox+getCronJob) ⇒ <code>Promise</code>
     * [.getCronJobHistory(options, [cb])](#module_sandboxjs..Sandbox+getCronJobHistory) ⇒ <code>Promise</code>
     * [.inspectToken(options, [cb])](#module_sandboxjs..Sandbox+inspectToken) ⇒ <code>Promise</code>
+    * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="new_module_sandboxjs..Sandbox_new"></a>
 #### new Sandbox(options)
@@ -354,19 +360,32 @@ Inspect an existing webtask token to resolve code and/or secrets
 | [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
+<a name="module_sandboxjs..Sandbox+revokeToken"></a>
+#### sandbox.revokeToken(token, [cb]) ⇒ <code>Promise</code>
+Revoke a webtask token
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the token  
+**See**: https://webtask.io/docs/api_revoke  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| token | <code>String</code> | The token that should be revoked |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks |
+
 <a name="CronJob"></a>
 ## CronJob
 **Kind**: global class  
 
 * [CronJob](#CronJob)
-  * [new CronJob()](#new_CronJob_new)
-  * [.claims](#CronJob+claims)
-  * [.sandbox](#CronJob+sandbox)
-  * [.refresh([cb])](#CronJob+refresh) ⇒ <code>Promise</code>
-  * [.remove([cb])](#CronJob+remove) ⇒ <code>Promise</code>
-  * [.getHistory(options, [cb])](#CronJob+getHistory) ⇒ <code>Promise</code>
-  * [.inspect(options, [cb])](#CronJob+inspect) ⇒ <code>Promise</code>
-  * [.setJobState(options, [cb])](#CronJob+setJobState) ⇒ <code>Promise</code>
+    * [new CronJob()](#new_CronJob_new)
+    * [.claims](#CronJob+claims)
+    * [.sandbox](#CronJob+sandbox)
+    * [.refresh([cb])](#CronJob+refresh) ⇒ <code>Promise</code>
+    * [.remove([cb])](#CronJob+remove) ⇒ <code>Promise</code>
+    * [.getHistory(options, [cb])](#CronJob+getHistory) ⇒ <code>Promise</code>
+    * [.inspect(options, [cb])](#CronJob+inspect) ⇒ <code>Promise</code>
+    * [.setJobState(options, [cb])](#CronJob+setJobState) ⇒ <code>Promise</code>
 
 <a name="new_CronJob_new"></a>
 ### new CronJob()
@@ -460,14 +479,15 @@ Set the cron job's state
 **Kind**: global class  
 
 * [Webtask](#Webtask)
-  * [new Webtask()](#new_Webtask_new)
-  * [.claims](#Webtask+claims)
-  * [.sandbox](#Webtask+sandbox)
-  * [.token](#Webtask+token)
-  * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
-  * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
-  * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
-  * [.inspect(options, [cb])](#Webtask+inspect) ⇒ <code>Promise</code>
+    * [new Webtask()](#new_Webtask_new)
+    * [.claims](#Webtask+claims)
+    * [.sandbox](#Webtask+sandbox)
+    * [.token](#Webtask+token)
+    * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
+    * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
+    * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
+    * [.inspect(options, [cb])](#Webtask+inspect) ⇒ <code>Promise</code>
+    * [.revoke([cb])](#Webtask+revoke) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
 ### new Webtask()
@@ -553,6 +573,17 @@ Inspect an existing webtask to optionally get code and/or secrets
 | options.token | <code>Boolean</code> | The token that you would like to inspect. |
 | [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
 | [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="Webtask+revoke"></a>
+### webtask.revoke([cb]) ⇒ <code>Promise</code>
+Revoke the webtask's token
+
+**Kind**: instance method of <code>[Webtask](#Webtask)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of inspecting the token.  
+
+| Param | Type | Description |
+| --- | --- | --- |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 
