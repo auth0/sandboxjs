@@ -97,6 +97,9 @@ Sandbox node.js code.
             * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
             * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
             * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
+            * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
+            * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
+            * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
             * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
             * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
             * [.setCronJobState(options, [cb])](#module_sandboxjs..Sandbox+setCronJobState) ⇒ <code>Promise</code>
@@ -104,6 +107,7 @@ Sandbox node.js code.
             * [.getCronJob(options, [cb])](#module_sandboxjs..Sandbox+getCronJob) ⇒ <code>Promise</code>
             * [.getCronJobHistory(options, [cb])](#module_sandboxjs..Sandbox+getCronJobHistory) ⇒ <code>Promise</code>
             * [.inspectToken(options, [cb])](#module_sandboxjs..Sandbox+inspectToken) ⇒ <code>Promise</code>
+            * [.inspectWebtask(options, [cb])](#module_sandboxjs..Sandbox+inspectWebtask) ⇒ <code>Promise</code>
             * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
@@ -148,6 +152,9 @@ Create a Sandbox instance
     * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
     * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
     * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
+    * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
+    * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
+    * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
     * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
     * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
     * [.setCronJobState(options, [cb])](#module_sandboxjs..Sandbox+setCronJobState) ⇒ <code>Promise</code>
@@ -155,6 +162,7 @@ Create a Sandbox instance
     * [.getCronJob(options, [cb])](#module_sandboxjs..Sandbox+getCronJob) ⇒ <code>Promise</code>
     * [.getCronJobHistory(options, [cb])](#module_sandboxjs..Sandbox+getCronJobHistory) ⇒ <code>Promise</code>
     * [.inspectToken(options, [cb])](#module_sandboxjs..Sandbox+inspectToken) ⇒ <code>Promise</code>
+    * [.inspectWebtask(options, [cb])](#module_sandboxjs..Sandbox+inspectWebtask) ⇒ <code>Promise</code>
     * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="new_module_sandboxjs..Sandbox_new"></a>
@@ -257,6 +265,47 @@ Note that the logs will include messages from our infrastructure.
 | options | <code>Object</code> | Streaming options overrides |
 | [options.container] | <code>String</code> | The container for which you would like to stream logs. Defaults to the current profile's container. |
 
+<a name="module_sandboxjs..Sandbox+getWebtask"></a>
+#### sandbox.getWebtask(options, [cb]) ⇒ <code>Promise</code>
+Read a named webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+removeWebtask"></a>
+#### sandbox.removeWebtask(options, [cb]) ⇒ <code>Promise</code>
+Remove a named webtask from the webtask container
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the cron job. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+listWebtasks"></a>
+#### sandbox.listWebtasks(options, [cb]) ⇒ <code>Promise</code>
+List named webtasks from the webtask container
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
 <a name="module_sandboxjs..Sandbox+createCronJob"></a>
 #### sandbox.createCronJob(options, [cb]) ⇒ <code>Promise</code>
 Create a cron job from an already-existing webtask token
@@ -356,6 +405,21 @@ Inspect an existing webtask token to resolve code and/or secrets
 | --- | --- | --- |
 | options | <code>Object</code> | Options for inspecting the webtask. |
 | options.token | <code>Boolean</code> | The token that you would like to inspect. |
+| [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
+| [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+inspectWebtask"></a>
+#### sandbox.inspectWebtask(options, [cb]) ⇒ <code>Promise</code>
+Inspect an existing named webtask to resolve code and/or secrets
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the resolved webtask data.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options for inspecting the webtask. |
+| options.name | <code>Boolean</code> | The named webtask that you would like to inspect. |
 | [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
 | [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
@@ -487,6 +551,7 @@ Set the cron job's state
     * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
     * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
     * [.inspect(options, [cb])](#Webtask+inspect) ⇒ <code>Promise</code>
+    * [.remove([cb])](#Webtask+remove) ⇒ <code>Promise</code>
     * [.revoke([cb])](#Webtask+revoke) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
@@ -570,9 +635,19 @@ Inspect an existing webtask to optionally get code and/or secrets
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options for inspecting the webtask. |
-| options.token | <code>Boolean</code> | The token that you would like to inspect. |
 | [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
 | [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="Webtask+remove"></a>
+### webtask.remove([cb]) ⇒ <code>Promise</code>
+Remove the named webtask
+
+**Kind**: instance method of <code>[Webtask](#Webtask)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of inspecting the token.  
+
+| Param | Type | Description |
+| --- | --- | --- |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="Webtask+revoke"></a>
@@ -580,7 +655,7 @@ Inspect an existing webtask to optionally get code and/or secrets
 Revoke the webtask's token
 
 **Kind**: instance method of <code>[Webtask](#Webtask)</code>  
-**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of inspecting the token.  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of revoking the token.  
 
 | Param | Type | Description |
 | --- | --- | --- |

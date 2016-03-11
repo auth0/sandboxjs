@@ -18,6 +18,8 @@ var sandboxParams = {
 
 lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function () {
     var googleTestCodeUrl = 'https://cdn.auth0.com/webtasks/test_cron_google.js';
+    var helloWorldCode = 'module.exports = function (cb) { cb(null, "OK"); };';
+    var counter = 0;
 
     lab.test('test pre-requisites are met', function (done) {
 
@@ -63,7 +65,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
     lab.test('can be used to create a named Webtask', function (done) {
         var sandbox = Sandbox.init(sandboxParams);
         var tokenOptions = {
-            name: 'pinggoogle',
+            name: 'pinggoogle-' + (counter++),
         };
 
         Bluebird.join(
@@ -78,6 +80,8 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
                 expect(url1.pathname + '/' + tokenOptions.name).to.equal(url2.pathname);
                 expect(url1.query.key).to.be.a.string();
                 expect(url2.query.key).to.not.exist();
+                
+                return sandbox.removeWebtask(tokenOptions);
             })
             .nodeify(done);
     });
@@ -95,11 +99,16 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
 
     lab.test('can be used to run a named Webtask', function (done) {
         var sandbox = Sandbox.init(sandboxParams);
+        var tokenOptions = {
+            name: 'pinggoogle-' + (counter++),
+        };
 
-        sandbox.run(googleTestCodeUrl, { name: 'pinggoogle' })
+        sandbox.run(googleTestCodeUrl, tokenOptions)
             .then(function (res) {
                 expect(res.statusCode).to.be.at.least(200).and.below(300);
                 expect(res.text).to.match(/^\d+$/);
+                
+                return sandbox.removeWebtask(tokenOptions);
             })
             .nodeify(done);
     });
@@ -139,6 +148,71 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
                 expect(res.statusCode).to.equal(500);
                 expect(res.clientError).to.equal(false);
                 expect(res.serverError).to.equal(true);
+            })
+            .nodeify(done);
+    });
+
+    lab.test('can be used to list named Webtasks in a container', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var tokenOptions = {
+            name: 'pinggoogle-' + (counter++),
+        };
+        
+        sandbox.create(googleTestCodeUrl, tokenOptions)
+            .then(function (webtask) {
+                return sandbox.listWebtasks()
+                    .then(function (webtasks) {
+                        expect(webtasks).to.be.an.array();
+                        expect(webtasks.length).to.be.at.least(1);
+                        
+                        expect(webtasks[0]).to.be.an.instanceof(Sandbox.Webtask);
+                        
+                        return webtask.remove();
+                    });
+            })
+            .nodeify(done);
+    });
+
+    lab.test('can be used to read a named webtask', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var tokenOptions = {
+            name: 'pinggoogle-' + (counter++),
+        };
+        
+        sandbox.create(googleTestCodeUrl, tokenOptions)
+            .then(function (created) {
+                return sandbox.getWebtask(tokenOptions)
+                    .then(function (read) {
+                        expect(created).to.be.an.instanceof(Sandbox.Webtask);
+                        expect(read).to.be.an.instanceof(Sandbox.Webtask);
+                        expect(read.url).to.equal(created.url);
+                        expect(read.token).to.equal(created.token);
+                        
+                        return read.remove();
+                    });
+            })
+            .nodeify(done);
+    });
+
+    lab.test('can be used to inspect a named webtask', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var tokenOptions = {
+            name: 'pinggoogle-' + (counter++),
+            secrets: {
+                foo: 'bar',
+            }
+        };
+        
+        sandbox.create(helloWorldCode, tokenOptions)
+            .then(function (webtask) {
+                return webtask.inspect({ decrypt: true, fetch_code: true })
+                    .then(function (data) {
+                        expect(data).to.be.an.object();
+                        expect(data.code).to.equal(helloWorldCode);
+                        expect(data.ectx).to.deep.equal(tokenOptions.secrets);
+                        
+                        return webtask.remove();
+                    });
             })
             .nodeify(done);
     });
