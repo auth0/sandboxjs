@@ -1,6 +1,6 @@
 {
   "name": "sandboxjs",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "lodash.get": "^3.7.0",
     "randexp": "^0.4.0",
     "superagent": "^1.4.0",
-    "webtask-log-stream": "^2.0.0"
+    "webtask-log-stream": "^2.0.1"
   },
   "devDependencies": {
     "code": "^1.5.0",
