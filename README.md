@@ -147,6 +147,7 @@ Sandbox node.js code.
             * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
             * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
             * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
+            * [.updateWebtask(options, [cb])](#module_sandboxjs..Sandbox+updateWebtask) ⇒ <code>Promise</code>
             * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
             * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
             * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
@@ -202,6 +203,7 @@ Create a Sandbox instance
     * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
     * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
     * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
+    * [.updateWebtask(options, [cb])](#module_sandboxjs..Sandbox+updateWebtask) ⇒ <code>Promise</code>
     * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
     * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
     * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
@@ -341,6 +343,29 @@ Remove a named webtask from the webtask container
 | options.name | <code>String</code> | The name of the cron job. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
+<a name="module_sandboxjs..Sandbox+updateWebtask"></a>
+#### sandbox.updateWebtask(options, [cb]) ⇒ <code>Promise</code>
+Update an existing webtask's code, secrets or other claims
+
+Note that this method should be used with caution as there is the potential
+for a race condition where another agent updates the webtask between the time
+that the webtask details and claims are resolved and when the webtask
+update is issued.
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an instance of Webtask representing the updated webtask  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| options.name | <code>String</code> | Name of the webtask to update |
+| [options.code] | <code>String</code> | Updated code for the webtask |
+| [options.url] | <code>String</code> | Updated code URL for the webtask |
+| [options.secrets] | <code>String</code> | If `false`, remove existing secrets, if an object update secrets, otherwise preserve |
+| [options.params] | <code>String</code> | If `false`, remove existing params, if an object update params, otherwise preserve |
+| [options.host] | <code>String</code> | If `false`, remove existing host, if a string update host, otherwise preserve |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
 <a name="module_sandboxjs..Sandbox+listWebtasks"></a>
 #### sandbox.listWebtasks(options, [cb]) ⇒ <code>Promise</code>
 List named webtasks from the webtask container
@@ -368,6 +393,7 @@ Create a cron job from an already-existing webtask token
 | options.name | <code>String</code> | The name of the cron job. |
 | options.token | <code>String</code> | The webtask token that will be used to run the job. |
 | options.schedule | <code>String</code> | The cron schedule that will be used to determine when the job will be run. |
+| options.meta | <code>String</code> | The cron metadata (set of string key value pairs). |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+removeCronJob"></a>
@@ -595,12 +621,14 @@ Set the cron job's state
     * [.claims](#Webtask+claims)
     * [.sandbox](#Webtask+sandbox)
     * [.token](#Webtask+token)
+    * [.meta](#Webtask+meta)
     * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
     * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
     * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
     * [.inspect(options, [cb])](#Webtask+inspect) ⇒ <code>Promise</code>
     * [.remove([cb])](#Webtask+remove) ⇒ <code>Promise</code>
     * [.revoke([cb])](#Webtask+revoke) ⇒ <code>Promise</code>
+    * [.update([options], [cb])](#Webtask+update) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
 ### new Webtask()
@@ -632,6 +660,15 @@ Creates an object representing a Webtask
 | Name | Description |
 | --- | --- |
 | token | The token associated with this webtask |
+
+<a name="Webtask+meta"></a>
+### webtask.meta
+**Kind**: instance property of <code>[Webtask](#Webtask)</code>  
+**Properties**
+
+| Name | Description |
+| --- | --- |
+| meta | The metadata associated with this webtask |
 
 <a name="Webtask+createLogStream"></a>
 ### webtask.createLogStream(options) ⇒ <code>Stream</code>
@@ -707,6 +744,18 @@ Revoke the webtask's token
 
 | Param | Type | Description |
 | --- | --- | --- |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="Webtask+update"></a>
+### webtask.update([options], [cb]) ⇒ <code>Promise</code>
+Update a webtask
+
+**Kind**: instance method of <code>[Webtask](#Webtask)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with the result of revoking the token.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [options] | <code>Object</code> | Options for updating a webtask (@see: Sandbox.updateWebtask) |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 
