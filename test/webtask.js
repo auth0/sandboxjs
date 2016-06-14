@@ -124,4 +124,35 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
             .call('remove')
             .nodeify(done);
     });
+
+    lab.test('can be used to run a named webtask', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var secrets = { foo: 'bar' };
+
+        sandbox.create(googleTestCodeUrl, { name: 'update-test', secrets: secrets })
+            .tap(function (webtask) {
+                return webtask.run({})
+                    .then(function (res) {
+                        expect(res.statusCode).to.be.at.least(200).and.below(300);
+                        expect(res.text).to.match(/^\d+$/);
+                    });
+            })
+            .call('remove')
+            .nodeify(done);
+    });
+
+    lab.test('can be used to run an unnamed webtask', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+        var secrets = { foo: 'bar' };
+
+        sandbox.create(googleTestCodeUrl, { secrets: secrets })
+            .tap(function (webtask) {
+                return webtask.run({})
+                    .then(function (res) {
+                        expect(res.statusCode).to.be.at.least(200).and.below(300);
+                        expect(res.text).to.match(/^\d+$/);
+                    });
+            })
+            .nodeify(done);
+    });
 });
