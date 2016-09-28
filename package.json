@@ -4,7 +4,6 @@
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
     "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo",
     "test": "lab -v"
   },
