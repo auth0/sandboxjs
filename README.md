@@ -127,6 +127,7 @@ function handleClaims(claims) {
 </dl>
 
 <a name="module_sandboxjs"></a>
+
 ## sandboxjs
 Sandbox node.js code.
 
@@ -143,7 +144,7 @@ Sandbox node.js code.
             * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
             * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
             * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
-            * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
+            * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
             * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
             * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
             * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
@@ -160,6 +161,7 @@ Sandbox node.js code.
             * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
+
 ### Sandbox.fromToken(token, options) ⇒ <code>Sandbox</code>
 Create a Sandbox instance from a webtask token
 
@@ -175,6 +177,7 @@ Create a Sandbox instance from a webtask token
 | options.token | <code>String</code> | The Webtask Token. See: https://webtask.io/docs/api_issue. |
 
 <a name="module_sandboxjs.init"></a>
+
 ### Sandbox.init(options) ⇒ <code>Sandbox</code>
 Create a Sandbox instance
 
@@ -189,6 +192,7 @@ Create a Sandbox instance
 | options.token | <code>String</code> | The Webtask Token. See: https://webtask.io/docs/api_issue. |
 
 <a name="module_sandboxjs..Sandbox"></a>
+
 ### Sandbox~Sandbox
 **Kind**: inner class of <code>[sandboxjs](#module_sandboxjs)</code>  
 
@@ -199,7 +203,7 @@ Create a Sandbox instance
     * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
     * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
     * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
-    * [.createTokenRaw(claims, [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
+    * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
     * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
     * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
     * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
@@ -216,6 +220,7 @@ Create a Sandbox instance
     * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
 
 <a name="new_module_sandboxjs..Sandbox_new"></a>
+
 #### new Sandbox(options)
 Creates an object representing a user's webtask.io credentials
 
@@ -228,6 +233,7 @@ Creates an object representing a user's webtask.io credentials
 | options.token | <code>String</code> | The JWT (see: http://jwt.io) issued by webtask.io that grants rights to run code in the indicated container |
 
 <a name="module_sandboxjs..Sandbox+create"></a>
+
 #### sandbox.create([codeOrUrl], [options], [cb]) ⇒ <code>Promise</code>
 Create a Webtask from the given options
 
@@ -241,6 +247,7 @@ Create a Webtask from the given options
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+createRaw"></a>
+
 #### sandbox.createRaw(claims, [cb]) ⇒ <code>Promise</code>
 Create a Webtask from the given claims
 
@@ -253,6 +260,7 @@ Create a Webtask from the given claims
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+createUrl"></a>
+
 #### sandbox.createUrl(options, [cb]) ⇒ <code>Promise</code>
 Shortcut to create a Webtask and get its url from the given options
 
@@ -265,6 +273,7 @@ Shortcut to create a Webtask and get its url from the given options
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+run"></a>
+
 #### sandbox.run([codeOrUrl], [options], [cb]) ⇒ <code>Promise</code>
 Shortcut to create and run a Webtask from the given options
 
@@ -278,6 +287,7 @@ Shortcut to create and run a Webtask from the given options
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+createToken"></a>
+
 #### sandbox.createToken(options, [cb]) ⇒ <code>Promise</code>
 Create a webtask token - A JWT (see: http://jwt.io) with the supplied options
 
@@ -290,7 +300,8 @@ Create a webtask token - A JWT (see: http://jwt.io) with the supplied options
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+createTokenRaw"></a>
-#### sandbox.createTokenRaw(claims, [cb]) ⇒ <code>Promise</code>
+
+#### sandbox.createTokenRaw(claims, [options], [cb]) ⇒ <code>Promise</code>
 Create a webtask token - A JWT (see: http://jwt.io) with the supplied claims
 
 **Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
@@ -299,9 +310,11 @@ Create a webtask token - A JWT (see: http://jwt.io) with the supplied claims
 | Param | Type | Description |
 | --- | --- | --- |
 | claims | <code>Object</code> | Claims to make for this token (see: https://webtask.io/docs/api_issue) |
+| [options] | <code>Object</code> | Optional options. Currently only options.include_webtask_url is supported. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="module_sandboxjs..Sandbox+createLogStream"></a>
+
 #### sandbox.createLogStream(options) ⇒ <code>Stream</code>
 Create a stream of logs from the webtask container
 
@@ -316,6 +329,7 @@ Note that the logs will include messages from our infrastructure.
 | [options.container] | <code>String</code> | The container for which you would like to stream logs. Defaults to the current profile's container. |
 
 <a name="module_sandboxjs..Sandbox+getWebtask"></a>
+
 #### sandbox.getWebtask(options, [cb]) ⇒ <code>Promise</code>
 Read a named webtask
 
@@ -330,6 +344,7 @@ Read a named webtask
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+removeWebtask"></a>
+
 #### sandbox.removeWebtask(options, [cb]) ⇒ <code>Promise</code>
 Remove a named webtask from the webtask container
 
@@ -344,6 +359,7 @@ Remove a named webtask from the webtask container
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+updateWebtask"></a>
+
 #### sandbox.updateWebtask(options, [cb]) ⇒ <code>Promise</code>
 Update an existing webtask's code, secrets or other claims
 
@@ -367,6 +383,7 @@ update is issued.
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+listWebtasks"></a>
+
 #### sandbox.listWebtasks(options, [cb]) ⇒ <code>Promise</code>
 List named webtasks from the webtask container
 
@@ -380,6 +397,7 @@ List named webtasks from the webtask container
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+createCronJob"></a>
+
 #### sandbox.createCronJob(options, [cb]) ⇒ <code>Promise</code>
 Create a cron job from an already-existing webtask token
 
@@ -397,6 +415,7 @@ Create a cron job from an already-existing webtask token
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+removeCronJob"></a>
+
 #### sandbox.removeCronJob(options, [cb]) ⇒ <code>Promise</code>
 Remove an existing cron job
 
@@ -411,6 +430,7 @@ Remove an existing cron job
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+setCronJobState"></a>
+
 #### sandbox.setCronJobState(options, [cb]) ⇒ <code>Promise</code>
 Set an existing cron job's state
 
@@ -426,6 +446,7 @@ Set an existing cron job's state
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+listCronJobs"></a>
+
 #### sandbox.listCronJobs([options], [cb]) ⇒ <code>Promise</code>
 List cron jobs associated with this profile
 
@@ -439,6 +460,7 @@ List cron jobs associated with this profile
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+getCronJob"></a>
+
 #### sandbox.getCronJob(options, [cb]) ⇒ <code>Promise</code>
 Get a CronJob instance associated with an existing cron job
 
@@ -453,6 +475,7 @@ Get a CronJob instance associated with an existing cron job
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+getCronJobHistory"></a>
+
 #### sandbox.getCronJobHistory(options, [cb]) ⇒ <code>Promise</code>
 Get the historical results of executions of an existing cron job.
 
@@ -469,6 +492,7 @@ Get the historical results of executions of an existing cron job.
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+inspectToken"></a>
+
 #### sandbox.inspectToken(options, [cb]) ⇒ <code>Promise</code>
 Inspect an existing webtask token to resolve code and/or secrets
 
@@ -484,6 +508,7 @@ Inspect an existing webtask token to resolve code and/or secrets
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+inspectWebtask"></a>
+
 #### sandbox.inspectWebtask(options, [cb]) ⇒ <code>Promise</code>
 Inspect an existing named webtask to resolve code and/or secrets
 
@@ -499,6 +524,7 @@ Inspect an existing named webtask to resolve code and/or secrets
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+revokeToken"></a>
+
 #### sandbox.revokeToken(token, [cb]) ⇒ <code>Promise</code>
 Revoke a webtask token
 
@@ -512,6 +538,7 @@ Revoke a webtask token
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="CronJob"></a>
+
 ## CronJob
 **Kind**: global class  
 
@@ -526,10 +553,12 @@ Revoke a webtask token
     * [.setJobState(options, [cb])](#CronJob+setJobState) ⇒ <code>Promise</code>
 
 <a name="new_CronJob_new"></a>
+
 ### new CronJob()
 Creates an object representing a CronJob
 
 <a name="CronJob+claims"></a>
+
 ### cronJob.claims
 **Kind**: instance property of <code>[CronJob](#CronJob)</code>  
 **Properties**
@@ -539,6 +568,7 @@ Creates an object representing a CronJob
 | claims | The claims embedded in the Webtask's token |
 
 <a name="CronJob+sandbox"></a>
+
 ### cronJob.sandbox
 **Kind**: instance property of <code>[CronJob](#CronJob)</code>  
 **Properties**
@@ -548,6 +578,7 @@ Creates an object representing a CronJob
 | sandbox | The {@see Sandbox} instance used to create this Webtask instance |
 
 <a name="CronJob+refresh"></a>
+
 ### cronJob.refresh([cb]) ⇒ <code>Promise</code>
 Refresh this job's metadata
 
@@ -559,6 +590,7 @@ Refresh this job's metadata
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="CronJob+remove"></a>
+
 ### cronJob.remove([cb]) ⇒ <code>Promise</code>
 Remove this cron job from the webtask cluster
 
@@ -572,6 +604,7 @@ Note that this will not revoke the underlying webtask token, so the underlying w
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="CronJob+getHistory"></a>
+
 ### cronJob.getHistory(options, [cb]) ⇒ <code>Promise</code>
 Get the history of this cron job
 
@@ -586,6 +619,7 @@ Get the history of this cron job
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="CronJob+inspect"></a>
+
 ### cronJob.inspect(options, [cb]) ⇒ <code>Promise</code>
 Inspect an existing webtask to optionally get code and/or secrets
 
@@ -600,6 +634,7 @@ Inspect an existing webtask to optionally get code and/or secrets
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="CronJob+setJobState"></a>
+
 ### cronJob.setJobState(options, [cb]) ⇒ <code>Promise</code>
 Set the cron job's state
 
@@ -613,6 +648,7 @@ Set the cron job's state
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="Webtask"></a>
+
 ## Webtask
 **Kind**: global class  
 
@@ -631,10 +667,12 @@ Set the cron job's state
     * [.update([options], [cb])](#Webtask+update) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
+
 ### new Webtask()
 Creates an object representing a Webtask
 
 <a name="Webtask+claims"></a>
+
 ### webtask.claims
 **Kind**: instance property of <code>[Webtask](#Webtask)</code>  
 **Properties**
@@ -644,6 +682,7 @@ Creates an object representing a Webtask
 | claims | The claims embedded in the Webtask's token |
 
 <a name="Webtask+sandbox"></a>
+
 ### webtask.sandbox
 **Kind**: instance property of <code>[Webtask](#Webtask)</code>  
 **Properties**
@@ -653,6 +692,7 @@ Creates an object representing a Webtask
 | sandbox | The {@see Sandbox} instance used to create this Webtask instance |
 
 <a name="Webtask+token"></a>
+
 ### webtask.token
 **Kind**: instance property of <code>[Webtask](#Webtask)</code>  
 **Properties**
@@ -662,6 +702,7 @@ Creates an object representing a Webtask
 | token | The token associated with this webtask |
 
 <a name="Webtask+meta"></a>
+
 ### webtask.meta
 **Kind**: instance property of <code>[Webtask](#Webtask)</code>  
 **Properties**
@@ -671,6 +712,7 @@ Creates an object representing a Webtask
 | meta | The metadata associated with this webtask |
 
 <a name="Webtask+createLogStream"></a>
+
 ### webtask.createLogStream(options) ⇒ <code>Stream</code>
 Create a stream of logs from the webtask container
 
@@ -685,6 +727,7 @@ Note that the logs will include messages from our infrastructure.
 | [options.container] | <code>String</code> | The container for which you would like to stream logs. Defaults to the current profile's container. |
 
 <a name="Webtask+run"></a>
+
 ### webtask.run(options, [cb]) ⇒ <code>Promise</code>
 Run the webtask and return the result of execution
 
@@ -697,6 +740,7 @@ Run the webtask and return the result of execution
 | [cb] | <code>function</code> | Optional node-style callback that will be invoked upon completion |
 
 <a name="Webtask+createCronJob"></a>
+
 ### webtask.createCronJob(options, [cb]) ⇒ <code>Promise</code>
 Schedule the webtask to run periodically
 
@@ -711,6 +755,7 @@ Schedule the webtask to run periodically
 | [cb] | <code>function</code> | Optional node-style callback that will be invoked upon completion |
 
 <a name="Webtask+inspect"></a>
+
 ### webtask.inspect(options, [cb]) ⇒ <code>Promise</code>
 Inspect an existing webtask to optionally get code and/or secrets
 
@@ -725,6 +770,7 @@ Inspect an existing webtask to optionally get code and/or secrets
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="Webtask+remove"></a>
+
 ### webtask.remove([cb]) ⇒ <code>Promise</code>
 Remove the named webtask
 
@@ -736,6 +782,7 @@ Remove the named webtask
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="Webtask+revoke"></a>
+
 ### webtask.revoke([cb]) ⇒ <code>Promise</code>
 Revoke the webtask's token
 
@@ -747,6 +794,7 @@ Revoke the webtask's token
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="Webtask+update"></a>
+
 ### webtask.update([options], [cb]) ⇒ <code>Promise</code>
 Update a webtask
 
