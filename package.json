@@ -40,6 +40,7 @@
     "code": "^1.5.0",
     "dotenv": "^1.2.0",
     "jsdoc-to-markdown": "^1.2.0",
+    "jsonwebtoken": "^7.2.1",
     "lab": "^5.17.0"
   }
 }
