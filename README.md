@@ -150,6 +150,7 @@ Sandbox node.js code.
             * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
             * [.updateWebtask(options, [cb])](#module_sandboxjs..Sandbox+updateWebtask) ⇒ <code>Promise</code>
             * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
+            * [.listAllWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listAllWebtasks) ⇒ <code>Promise</code>
             * [.createCronJob(options, [cb])](#module_sandboxjs..Sandbox+createCronJob) ⇒ <code>Promise</code>
             * [.removeCronJob(options, [cb])](#module_sandboxjs..Sandbox+removeCronJob) ⇒ <code>Promise</code>
             * [.setCronJobState(options, [cb])](#module_sandboxjs..Sandbox+setCronJobState) ⇒ <code>Promise</code>
@@ -385,10 +386,26 @@ update is issued.
 <a name="module_sandboxjs..Sandbox+listWebtasks"></a>
 
 #### sandbox.listWebtasks(options, [cb]) ⇒ <code>Promise</code>
-List named webtasks from the webtask container
+List named webtasks from the webtask container up to the limit specified
 
 **Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
 **Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| [options.limit] | <code>Integer</code> | Set the number of webtasks to return.  Minimum is 10. Default is 20. |
+| [options.offset] | <code>Integer</code> | Set the number of webtasks to skip before returning them.  Default is 0. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+listAllWebtasks"></a>
+
+#### sandbox.listAllWebtasks(options, [cb]) ⇒ <code>Promise</code>
+List all named webtasks from the webtask container
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of all webtasks Webtasks  
 
 | Param | Type | Description |
 | --- | --- | --- |
