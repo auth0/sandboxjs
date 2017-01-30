@@ -160,7 +160,6 @@ Sandbox node.js code.
             * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
             * [.listNodeModuleVersions(options, [cb])](#module_sandboxjs..Sandbox+listNodeModuleVersions) ⇒ <code>Promise</code>
             * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
-            * [.rebuildNodeModules(options, [cb])](#module_sandboxjs..Sandbox+rebuildNodeModules) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
 ### Sandbox.fromToken(token, options) ⇒ <code>Sandbox</code>
@@ -219,7 +218,6 @@ Create a Sandbox instance
     * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
     * [.listNodeModuleVersions(options, [cb])](#module_sandboxjs..Sandbox+listNodeModuleVersions) ⇒ <code>Promise</code>
     * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
-    * [.rebuildNodeModules(options, [cb])](#module_sandboxjs..Sandbox+rebuildNodeModules) ⇒ <code>Promise</code>
 
 <a name="new_module_sandboxjs..Sandbox_new"></a>
 #### new Sandbox(options)
@@ -542,19 +540,7 @@ Ensure that a set of modules are available on the platform
 | --- | --- | --- |
 | options | <code>Object</code> | Options |
 | options.modules | <code>Array</code> | Array of { name, version } pairs |
-| [cb] | <code>function</code> | Optional callback function for node-style callbacks |
-
-<a name="module_sandboxjs..Sandbox+rebuildNodeModules"></a>
-#### sandbox.rebuildNodeModules(options, [cb]) ⇒ <code>Promise</code>
-Trigger a rebuild of a set of node modules
-
-**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
-**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of { name, version, state } objects  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | Options |
-| options.modules | <code>Array</code> | Array of { name, version } pairs |
+| poptions.reset | <code>Boolean</code> | Trigger a rebuild of the modules (Requires administrative token) |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
 
 <a name="CronJob"></a>
