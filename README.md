@@ -107,6 +107,30 @@ function handleClaims(claims) {
 }
 ```
 
+**Working with webtask-storage**
+
+```js
+var Sandbox = require('sandboxjs');
+
+var sandbox = Sandbox.init({ /* ... */ });
+var webtaskName = 'my_webtask';
+
+sandbox.getStorage({
+  name: webtaskName
+}).then(function (storage) {
+  storage.data.newKey = 'newValue';
+  
+  delete storage.etag;
+
+  return sandbox.updateStorage(storage, {
+    name: webtaskName
+  });
+}).then(function () {
+  console.log('storage updated')
+});
+
+```
+
 ## API
 
 ## Modules
