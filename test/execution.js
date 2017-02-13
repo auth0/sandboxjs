@@ -157,20 +157,49 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
         var tokenOptions = {
             name: 'pinggoogle-' + (counter++),
         };
-        
+
         sandbox.create(googleTestCodeUrl, tokenOptions)
             .then(function (webtask) {
                 return sandbox.listWebtasks()
                     .then(function (webtasks) {
                         expect(webtasks).to.be.an.array();
                         expect(webtasks.length).to.be.at.least(1);
-                        
+
                         expect(webtasks[0]).to.be.an.instanceof(Sandbox.Webtask);
-                        
+
                         return webtask.remove();
                     });
             })
             .nodeify(done);
+    });
+
+    lab.test('can be used to list all named Webtasks in a container', function (done) {
+        var sandbox = Sandbox.init(sandboxParams);
+
+        var sandboxPromises = [];
+        for(var i=0; i<30; ++i) {
+          var tokenOptions = {
+            name: 'pinggoogle-' + (counter++),
+          };
+          sandboxPromises.push(sandbox.create(googleTestCodeUrl, tokenOptions));
+        }
+
+        Bluebird.all(sandboxPromises)
+            .then(function (webtasks) {
+                return sandbox.listAllWebtasks()
+                    .then(function (webtasksList) {
+                        webtasks.forEach(function(webtask) { webtask.remove() });
+                        expect(webtasksList).to.be.an.array();
+                        expect(webtasksList.length).to.be.at.least(30);
+
+                        expect(webtasksList[0]).to.be.an.instanceof(Sandbox.Webtask);
+                  })
+                  .catch(function(err) {
+                    webtasks.forEach(function(webtask) { webtask.remove() });
+                    done(err);
+                  });
+          })
+          .nodeify(done);
     });
 
     lab.test('can be used to read a named webtask', function (done) {
