@@ -107,30 +107,6 @@ function handleClaims(claims) {
 }
 ```
 
-**Working with webtask-storage**
-
-```js
-var Sandbox = require('sandboxjs');
-
-var sandbox = Sandbox.init({ /* ... */ });
-var webtaskName = 'my_webtask';
-
-sandbox.getStorage({
-  name: webtaskName
-}).then(function (storage) {
-  storage.data.newKey = 'newValue';
-  
-  delete storage.etag;
-
-  return sandbox.updateStorage(storage, {
-    name: webtaskName
-  });
-}).then(function () {
-  console.log('storage updated')
-});
-
-```
-
 ## API
 
 ## Modules
@@ -184,6 +160,10 @@ Sandbox node.js code.
             * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
             * [.listNodeModuleVersions(options, [cb])](#module_sandboxjs..Sandbox+listNodeModuleVersions) ⇒ <code>Promise</code>
             * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
+            * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
+            * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
+            * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
+            * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
 ### Sandbox.fromToken(token, options) ⇒ <code>Sandbox</code>
@@ -242,6 +222,10 @@ Create a Sandbox instance
     * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
     * [.listNodeModuleVersions(options, [cb])](#module_sandboxjs..Sandbox+listNodeModuleVersions) ⇒ <code>Promise</code>
     * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
+    * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
+    * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
+    * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
+    * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
 
 <a name="new_module_sandboxjs..Sandbox_new"></a>
 #### new Sandbox(options)
@@ -564,8 +548,70 @@ Ensure that a set of modules are available on the platform
 | --- | --- | --- |
 | options | <code>Object</code> | Options |
 | options.modules | <code>Array</code> | Array of { name, version } pairs |
-| poptions.reset | <code>Boolean</code> | Trigger a rebuild of the modules (Requires administrative token) |
+| options.reset | <code>Boolean</code> | Trigger a rebuild of the modules (Requires administrative token) |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
+
+<a name="module_sandboxjs..Sandbox+updateStorage"></a>
+#### sandbox.updateStorage(options, storage, [cb]) ⇒ <code>Promise</code>
+Update the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| storage | <code>Object</code> | storage |
+| storage.data | <code>Object</code> | The data to be stored |
+| storage.etag | <code>String</code> | Pass in an optional string to be used for optimistic concurrency control to prevent simultaneous updates of the same data. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+getStorage"></a>
+#### sandbox.getStorage(options, [cb]) ⇒ <code>Promise</code>
+Read the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+updateStorage"></a>
+#### sandbox.updateStorage(options, storage, [cb]) ⇒ <code>Promise</code>
+Update the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| storage | <code>Object</code> | storage |
+| storage.data | <code>Object</code> | The data to be stored |
+| storage.etag | <code>String</code> | Pass in an optional string to be used for optimistic concurrency control to prevent simultaneous updates of the same data. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="module_sandboxjs..Sandbox+getStorage"></a>
+#### sandbox.getStorage(options, [cb]) ⇒ <code>Promise</code>
+Read the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="CronJob"></a>
 ## CronJob
