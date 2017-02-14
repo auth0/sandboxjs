@@ -77,10 +77,9 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
 
                 expect(webtask1.url).to.match(/^https:\/\//);
                 expect(webtask2.url).to.match(/^https:\/\//);
-                expect(url1.pathname + '/' + tokenOptions.name).to.equal(url2.pathname);
                 expect(url1.query.key).to.be.a.string();
                 expect(url2.query.key).to.not.exist();
-                
+
                 return sandbox.removeWebtask(tokenOptions);
             })
             .nodeify(done);
@@ -107,7 +106,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
             .then(function (res) {
                 expect(res.statusCode).to.be.at.least(200).and.below(300);
                 expect(res.text).to.match(/^\d+$/);
-                
+
                 return sandbox.removeWebtask(tokenOptions);
             })
             .nodeify(done);
@@ -157,16 +156,16 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
         var tokenOptions = {
             name: 'pinggoogle-' + (counter++),
         };
-        
+
         sandbox.create(googleTestCodeUrl, tokenOptions)
             .then(function (webtask) {
                 return sandbox.listWebtasks()
                     .then(function (webtasks) {
                         expect(webtasks).to.be.an.array();
                         expect(webtasks.length).to.be.at.least(1);
-                        
+
                         expect(webtasks[0]).to.be.an.instanceof(Sandbox.Webtask);
-                        
+
                         return webtask.remove();
                     });
             })
@@ -178,7 +177,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
         var tokenOptions = {
             name: 'pinggoogle-' + (counter++),
         };
-        
+
         sandbox.create(googleTestCodeUrl, tokenOptions)
             .then(function (created) {
                 return sandbox.getWebtask(tokenOptions)
@@ -187,7 +186,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
                         expect(read).to.be.an.instanceof(Sandbox.Webtask);
                         expect(read.url).to.equal(created.url);
                         expect(read.token).to.equal(created.token);
-                        
+
                         return read.remove();
                     });
             })
@@ -202,7 +201,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
                 foo: 'bar',
             }
         };
-        
+
         sandbox.create(helloWorldCode, tokenOptions)
             .then(function (webtask) {
                 return webtask.inspect({ decrypt: true, fetch_code: true })
@@ -210,7 +209,7 @@ lab.experiment('Sandbox instance', {parallel: true, timeout: 10000}, function ()
                         expect(data).to.be.an.object();
                         expect(data.code).to.equal(helloWorldCode);
                         expect(data.ectx).to.deep.equal(tokenOptions.secrets);
-                        
+
                         return webtask.remove();
                     });
             })
