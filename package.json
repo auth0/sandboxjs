@@ -1,10 +1,11 @@
 {
   "name": "sandboxjs",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
     "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo",
+    "preversion": "npm run docs",
     "test": "lab -v"
   },
   "repository": {

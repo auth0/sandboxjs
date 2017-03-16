@@ -162,8 +162,6 @@ Sandbox node.js code.
             * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
             * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
             * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
-            * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
-            * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
 
 <a name="module_sandboxjs.fromToken"></a>
 ### Sandbox.fromToken(token, options) ⇒ <code>Sandbox</code>
@@ -222,8 +220,6 @@ Create a Sandbox instance
     * [.revokeToken(token, [cb])](#module_sandboxjs..Sandbox+revokeToken) ⇒ <code>Promise</code>
     * [.listNodeModuleVersions(options, [cb])](#module_sandboxjs..Sandbox+listNodeModuleVersions) ⇒ <code>Promise</code>
     * [.ensureNodeModules(options, [cb])](#module_sandboxjs..Sandbox+ensureNodeModules) ⇒ <code>Promise</code>
-    * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
-    * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
     * [.updateStorage(options, storage, [cb])](#module_sandboxjs..Sandbox+updateStorage) ⇒ <code>Promise</code>
     * [.getStorage(options, [cb])](#module_sandboxjs..Sandbox+getStorage) ⇒ <code>Promise</code>
 
@@ -582,37 +578,6 @@ Read the storage associated to the a webtask
 | options.name | <code>String</code> | The name of the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
-<a name="module_sandboxjs..Sandbox+updateStorage"></a>
-#### sandbox.updateStorage(options, storage, [cb]) ⇒ <code>Promise</code>
-Update the storage associated to the a webtask
-
-**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
-**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | Options |
-| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
-| options.name | <code>String</code> | The name of the webtask. |
-| storage | <code>Object</code> | storage |
-| storage.data | <code>Object</code> | The data to be stored |
-| storage.etag | <code>String</code> | Pass in an optional string to be used for optimistic concurrency control to prevent simultaneous updates of the same data. |
-| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
-
-<a name="module_sandboxjs..Sandbox+getStorage"></a>
-#### sandbox.getStorage(options, [cb]) ⇒ <code>Promise</code>
-Read the storage associated to the a webtask
-
-**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
-**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | Options |
-| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
-| options.name | <code>String</code> | The name of the webtask. |
-| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
-
 <a name="CronJob"></a>
 ## CronJob
 **Kind**: global class  
@@ -731,6 +696,8 @@ Set the cron job's state
     * [.remove([cb])](#Webtask+remove) ⇒ <code>Promise</code>
     * [.revoke([cb])](#Webtask+revoke) ⇒ <code>Promise</code>
     * [.update([options], [cb])](#Webtask+update) ⇒ <code>Promise</code>
+    * [.updateStorage(options, storage, [cb])](#Webtask+updateStorage) ⇒ <code>Promise</code>
+    * [.getStorage(options, [cb])](#Webtask+getStorage) ⇒ <code>Promise</code>
 
 <a name="new_Webtask_new"></a>
 ### new Webtask()
@@ -858,6 +825,37 @@ Update a webtask
 | Param | Type | Description |
 | --- | --- | --- |
 | [options] | <code>Object</code> | Options for updating a webtask (@see: Sandbox.updateWebtask) |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="Webtask+updateStorage"></a>
+### webtask.updateStorage(options, storage, [cb]) ⇒ <code>Promise</code>
+Update the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Webtask](#Webtask)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| storage | <code>Object</code> | storage |
+| storage.data | <code>Object</code> | The data to be stored |
+| storage.etag | <code>String</code> | Pass in an optional string to be used for optimistic concurrency control to prevent simultaneous updates of the same data. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
+<a name="Webtask+getStorage"></a>
+### webtask.getStorage(options, [cb]) ⇒ <code>Promise</code>
+Read the storage associated to the a webtask
+
+**Kind**: instance method of <code>[Webtask](#Webtask)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 
