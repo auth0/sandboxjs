@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "docs": "jsdoc2md -t jsdoc2md/README.hbs lib/*.js > README.md; echo",
-    "preversion": "npm run docs",
+    "preversion": "npm run test && npm run docs",
     "test": "lab -v"
   },
   "repository": {
