@@ -26,7 +26,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
 
         done();
     });
-    
+
     lab.test('creation will throw if a name cannot be derived', function (done) {
         var sandbox = Sandbox.init(sandboxParams);
         var resolved = false;
@@ -36,7 +36,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
         // throw.
         sandbox.create('https://example.com')
             .call('createCronJob', { schedule: '* * * * *' })
-            .tap(function (job) {
+            .tap(function () {
                 resolved = true;
             })
             .catch(function (err) {
@@ -48,7 +48,7 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
             })
             .nodeify(done);
     });
-    
+
     lab.test('instances can be created from Webtask instances and can destroy themselves', function (done) {
         var sandbox = Sandbox.init(sandboxParams);
         var jobName = 'sandboxjs-test';
@@ -72,30 +72,29 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
             })
             .nodeify(done);
     });
-    
-    lab.test('listings can be retrieved from a Sandbox', function (done) {
+
+    lab.test('listings can be retrieved from a Sandbox', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var jobName = 'sandboxjs-test';
 
         sandbox.create(googleTestCodeUrl, { name: jobName })
             .call('createCronJob', { schedule: '* * * * *' })
             .tap(function (job) {
+                onCleanUp(next => job.remove(next));
+
                 var found = false;
-                
+
                 expect(job).to.be.an.instanceOf(Sandbox.CronJob);
                 expect(job.sandbox.url).to.equal(sandbox.url);
                 expect(job.name).to.equal(jobName);
-                
+
                 return Bluebird.join(job, sandbox.listCronJobs(), function (created, jobs) {
                     jobs.forEach(function (job) {
                         found = found || (job.name === created.name);
                     });
-                    
+
                     expect(found).to.equal(true);
                 });
-            })
-            .tap(function (job) {
-                return job.remove();
             })
             .nodeify(done);
     });

@@ -1,10 +1,8 @@
 require('dotenv').load({ silent: true });
 
-var Bluebird = require('bluebird');
 var Code = require('code');
 var Lab = require('lab');
 var Sandbox = require('../');
-var Url = require('url');
 
 var lab = exports.lab = Lab.script();
 var expect = Code.expect;
@@ -29,12 +27,14 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
         done();
     });
 
-    lab.test('can be updated with noop options', done => {
+    lab.test('can be updated with noop options', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
 
         sandbox.create(helloWorldCode, { name: 'update-test', secrets: secrets })
             .then(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 return webtask.update();
             })
             .tap(webtask => {
@@ -43,21 +43,22 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
                 expect(webtask.constructor.name).to.equal('Webtask');
                 expect(webtask.container).to.equal(sandbox.container);
                 expect(webtask.claims).to.be.an.object();
-                
+
                 return webtask.inspect({ decrypt: true })
                     .then(function (claims) {
-                        expect(claims.ectx).to.deep.equal(secrets);
+                        expect(claims.ectx).to.equal(secrets);
                     });
             })
-            .call('remove')
             .nodeify(done);
     });
 
-    lab.test('can be updated from code to a url', done => {
+    lab.test('can be updated from code to a url', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
 
         sandbox.create(helloWorldCode, { name: 'update-test' })
             .then(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 return webtask.update({ url: googleTestCodeUrl });
             })
             .tap(webtask => {
@@ -69,16 +70,17 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
                 expect(webtask.claims.code).to.be.undefined();
                 expect(webtask.claims.url).to.equal(googleTestCodeUrl);
             })
-            .call('remove')
             .nodeify(done);
     });
 
-    lab.test('will preserve its secrets', done => {
+    lab.test('will preserve its secrets', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
 
         sandbox.create(helloWorldCode, { name: 'update-test', secrets: secrets })
             .then(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 return webtask.update({ url: googleTestCodeUrl });
             })
             .tap(webtask => {
@@ -89,22 +91,23 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
                 expect(webtask.claims).to.be.an.object();
                 expect(webtask.claims.code).to.be.undefined();
                 expect(webtask.claims.url).to.equal(googleTestCodeUrl);
-                
+
                 return webtask.inspect({ decrypt: true })
                     .then(function (claims) {
-                        expect(claims.ectx).to.deep.equal(secrets);
+                        expect(claims.ectx).to.equal(secrets);
                     });
             })
-            .call('remove')
             .nodeify(done);
     });
 
-    lab.test('will strip secrets when secrets === false', done => {
+    lab.test('will strip secrets when secrets === false', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
 
         sandbox.create(helloWorldCode, { name: 'update-test', secrets: secrets })
             .then(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 return webtask.update({ url: googleTestCodeUrl, secrets: false });
             })
             .tap(webtask => {
@@ -115,38 +118,40 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
                 expect(webtask.claims).to.be.an.object();
                 expect(webtask.claims.code).to.be.undefined();
                 expect(webtask.claims.url).to.equal(googleTestCodeUrl);
-                
+
                 return webtask.inspect({ decrypt: true })
                     .then(function (claims) {
                         expect(claims.ectx).to.be.undefined();
                     });
             })
-            .call('remove')
             .nodeify(done);
     });
 
-    lab.test('can be used to run a named webtask', done => {
+    lab.test('can be used to run a named webtask', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
 
-        sandbox.create(googleTestCodeUrl, { name: 'update-test', secrets: secrets })
+        sandbox.create(helloWorldCode, { name: 'update-test', secrets: secrets })
             .tap(webtask => {
+                onCleanUp(next => webtask.remove(next));
+
                 return webtask.run({})
                     .then(function (res) {
                         expect(res.statusCode).to.be.at.least(200).and.below(300);
-                        expect(res.text).to.match(/^\d+$/);
+                        expect(res.text).to.equal('"OK"');
                     });
             })
-            .call('remove')
             .nodeify(done);
     });
 
-    lab.test('can be used to run an unnamed webtask', done => {
+    lab.test('can be used to run an unnamed webtask', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
 
         sandbox.create(googleTestCodeUrl, { secrets: secrets })
             .tap(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 return webtask.run({})
                     .then(function (res) {
                         expect(res.statusCode).to.be.at.least(200).and.below(300);
@@ -155,16 +160,18 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
             })
             .nodeify(done);
     });
-    
-    lab.test('can be updated and will preserve metadata', done => {
+
+    lab.test('can be updated and will preserve metadata', (done, onCleanUp) => {
         var sandbox = Sandbox.init(sandboxParams);
         var secrets = { foo: 'bar' };
         var meta = { key: 'value' };
 
         sandbox.create(helloWorldCode, { name: 'update-meta-test', secrets, meta })
             .then(webtask => {
+                onCleanUp((next) => webtask.remove(next));
+
                 expect(webtask.meta).to.equal(meta);
-                
+
                 return webtask.update({ code: helloWorldCode });
             })
             .tap(webtask => {
@@ -174,15 +181,14 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
                 expect(webtask.container).to.equal(sandbox.container);
                 expect(webtask.claims).to.be.an.object();
                 expect(webtask.meta).to.be.an.object();
-                
+
                 return webtask.inspect({ decrypt: true, fetch_code: true, meta: true })
                     .then(function (claims) {
-                        expect(claims.ectx).to.deep.equal(secrets);
+                        expect(claims.ectx).to.equal(secrets);
                         expect(claims.code).to.equal(helloWorldCode);
-                        expect(claims.meta).to.deep.equal(meta);
+                        expect(claims.meta).to.equal(meta);
                     });
             })
-            .call('remove')
             .nodeify(done);
     });
 });
