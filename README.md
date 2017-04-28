@@ -143,6 +143,7 @@ Sandbox node.js code.
             * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
             * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
             * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
+            * [.issueRequest(request, [cb])](#module_sandboxjs..Sandbox+issueRequest) ⇒ <code>Promise</code>
             * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
             * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
             * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
@@ -203,6 +204,7 @@ Create a Sandbox instance
     * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
     * [.run([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+run) ⇒ <code>Promise</code>
     * [.createToken(options, [cb])](#module_sandboxjs..Sandbox+createToken) ⇒ <code>Promise</code>
+    * [.issueRequest(request, [cb])](#module_sandboxjs..Sandbox+issueRequest) ⇒ <code>Promise</code>
     * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
     * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
     * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
@@ -296,6 +298,22 @@ Create a webtask token - A JWT (see: http://jwt.io) with the supplied options
 | --- | --- | --- |
 | options | <code>Object</code> | Claims to make for this token (see: https://webtask.io/docs/api_issue) |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks |
+
+<a name="module_sandboxjs..Sandbox+issueRequest"></a>
+#### sandbox.issueRequest(request, [cb]) ⇒ <code>Promise</code>
+Run a prepared Superagent request through any configured
+onBeforeRequest hooks.
+
+This can be useful for enablying proxies for server-side
+consumers of sandboxjs.
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - - A promise representing the fulfillment of the request  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| request | <code>Superagent.Request</code> | Instance of a superagent request |
+| [cb] | <code>function</code> | Node-style callback function |
 
 <a name="module_sandboxjs..Sandbox+createTokenRaw"></a>
 #### sandbox.createTokenRaw(claims, [options], [cb]) ⇒ <code>Promise</code>
