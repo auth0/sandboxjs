@@ -27,19 +27,19 @@
   "homepage": "https://github.com/auth0/sandboxjs",
   "dependencies": {
     "bluebird": "^2.9.34",
-    "jwt-decode": "^1.4.0",
-    "lodash.assign": "^3.2.0",
-    "lodash.defaults": "^3.1.2",
-    "lodash.defaultsdeep": "^3.10.0",
-    "lodash.foreach": "^3.0.3",
-    "lodash.get": "^3.7.0",
+    "jwt-decode": "^2.2.0",
+    "lodash.assign": "^4.2.0",
+    "lodash.defaults": "^4.2.0",
+    "lodash.defaultsdeep": "^4.6.0",
+    "lodash.foreach": "^4.5.0",
+    "lodash.get": "^4.4.2",
     "randexp": "^0.4.0",
-    "superagent": "^1.4.0",
-    "webtask-log-stream": "^2.0.1"
+    "superagent": "^3.5.2",
+    "webtask-log-stream": "^2.1.0"
   },
   "devDependencies": {
     "code": "^4.0.0",
-    "dotenv": "^1.2.0",
+    "dotenv": "^4.0.0",
     "jsdoc-to-markdown": "^1.2.0",
     "jsonwebtoken": "^7.3.0",
     "lab": "^13.0.2"
