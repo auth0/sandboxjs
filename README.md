@@ -139,6 +139,7 @@ Sandbox node.js code.
     * _inner_
         * [~Sandbox](#module_sandboxjs..Sandbox)
             * [new Sandbox(options)](#new_module_sandboxjs..Sandbox_new)
+            * [.clone(options)](#module_sandboxjs..Sandbox+clone)
             * [.create([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+create) ⇒ <code>Promise</code>
             * [.createRaw(claims, [cb])](#module_sandboxjs..Sandbox+createRaw) ⇒ <code>Promise</code>
             * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
@@ -203,6 +204,7 @@ Create a Sandbox instance
 
 * [~Sandbox](#module_sandboxjs..Sandbox)
     * [new Sandbox(options)](#new_module_sandboxjs..Sandbox_new)
+    * [.clone(options)](#module_sandboxjs..Sandbox+clone)
     * [.create([codeOrUrl], [options], [cb])](#module_sandboxjs..Sandbox+create) ⇒ <code>Promise</code>
     * [.createRaw(claims, [cb])](#module_sandboxjs..Sandbox+createRaw) ⇒ <code>Promise</code>
     * [.createUrl(options, [cb])](#module_sandboxjs..Sandbox+createUrl) ⇒ <code>Promise</code>
@@ -241,6 +243,22 @@ Creates an object representing a user's webtask.io credentials
 | options.url | <code>String</code> | The url of the webtask cluster where code will run |
 | options.container | <code>String</code> | The name of the container in which code will run |
 | options.token | <code>String</code> | The JWT (see: http://jwt.io) issued by webtask.io that grants rights to run code in the indicated container |
+| [options.onBeforeRequest] | <code>String</code> | An array of hook functions to be invoked with a prepared request |
+
+<a name="module_sandboxjs..Sandbox+clone"></a>
+
+#### sandbox.clone(options)
+Create a clone of this sandbox instances with one or more different parameters
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options used to configure the profile |
+| [options.url] | <code>String</code> | The url of the webtask cluster where code will run |
+| [options.container] | <code>String</code> | The name of the container in which code will run |
+| [options.token] | <code>String</code> | The JWT (see: http://jwt.io) issued by webtask.io that grants rights to run code in the indicated container |
+| [options.onBeforeRequest] | <code>String</code> | An array of hook functions to be invoked with a prepared request |
 
 <a name="module_sandboxjs..Sandbox+create"></a>
 
