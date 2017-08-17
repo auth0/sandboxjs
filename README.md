@@ -456,6 +456,7 @@ Create a cron job from an already-existing webtask token
 | options.name | <code>String</code> | The name of the cron job. |
 | options.token | <code>String</code> | The webtask token that will be used to run the job. |
 | options.schedule | <code>String</code> | The cron schedule that will be used to determine when the job will be run. |
+| options.tz | <code>String</code> | The cron timezone (IANA timezone). |
 | options.meta | <code>String</code> | The cron metadata (set of string key value pairs). |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
@@ -861,6 +862,7 @@ Schedule the webtask to run periodically
 | options | <code>Object</code> | Options for creating the webtask |
 | options.schedule | <code>Object</code> | Cron-string-formatted schedule |
 | [options.name] | <code>Object</code> | The name for the cron job |
+| [options.tz] | <code>Object</code> | The timezone for the cron job (IANA timezone) |
 | [cb] | <code>function</code> | Optional node-style callback that will be invoked upon completion |
 
 <a name="Webtask+inspect"></a>
