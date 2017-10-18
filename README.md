@@ -149,6 +149,7 @@ Sandbox node.js code.
             * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
             * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
             * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
+            * [.createWebtask(options, [cb])](#module_sandboxjs..Sandbox+createWebtask) ⇒ <code>Promise</code>
             * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
             * [.updateWebtask(options, [cb])](#module_sandboxjs..Sandbox+updateWebtask) ⇒ <code>Promise</code>
             * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
@@ -214,6 +215,7 @@ Create a Sandbox instance
     * [.createTokenRaw(claims, [options], [cb])](#module_sandboxjs..Sandbox+createTokenRaw) ⇒ <code>Promise</code>
     * [.createLogStream(options)](#module_sandboxjs..Sandbox+createLogStream) ⇒ <code>Stream</code>
     * [.getWebtask(options, [cb])](#module_sandboxjs..Sandbox+getWebtask) ⇒ <code>Promise</code>
+    * [.createWebtask(options, [cb])](#module_sandboxjs..Sandbox+createWebtask) ⇒ <code>Promise</code>
     * [.removeWebtask(options, [cb])](#module_sandboxjs..Sandbox+removeWebtask) ⇒ <code>Promise</code>
     * [.updateWebtask(options, [cb])](#module_sandboxjs..Sandbox+updateWebtask) ⇒ <code>Promise</code>
     * [.listWebtasks(options, [cb])](#module_sandboxjs..Sandbox+listWebtasks) ⇒ <code>Promise</code>
@@ -388,6 +390,24 @@ Read a named webtask
 | options.name | <code>String</code> | The name of the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
+<a name="module_sandboxjs..Sandbox+createWebtask"></a>
+
+#### sandbox.createWebtask(options, [cb]) ⇒ <code>Promise</code>
+Create a named webtask
+
+**Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
+**Returns**: <code>Promise</code> - A Promise that will be fulfilled with an array of Webtasks  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | Options |
+| [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| options.name | <code>String</code> | The name of the webtask. |
+| [options.secrets] | <code>String</code> | Set the webtask secrets. |
+| [options.meta] | <code>String</code> | Set the webtask metadata. |
+| [options.host] | <code>String</code> | Set the webtask hostname. |
+| [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
+
 <a name="module_sandboxjs..Sandbox+removeWebtask"></a>
 
 #### sandbox.removeWebtask(options, [cb]) ⇒ <code>Promise</code>
@@ -444,7 +464,7 @@ List named webtasks from the webtask container
 <a name="module_sandboxjs..Sandbox+createCronJob"></a>
 
 #### sandbox.createCronJob(options, [cb]) ⇒ <code>Promise</code>
-Create a cron job from an already-existing webtask token
+Create a cron job from an already-existing webtask
 
 **Kind**: instance method of <code>[Sandbox](#module_sandboxjs..Sandbox)</code>  
 **Returns**: <code>Promise</code> - A Promise that will be fulfilled with a {@see CronJob} instance.  
@@ -454,7 +474,7 @@ Create a cron job from an already-existing webtask token
 | options | <code>Object</code> | Options for creating a cron job |
 | [options.container] | <code>String</code> | The container in which the job will run. Defaults to the current profile's container. |
 | options.name | <code>String</code> | The name of the cron job. |
-| options.token | <code>String</code> | The webtask token that will be used to run the job. |
+| [options.token] | <code>String</code> | The webtask token that will be used to run the job. |
 | options.schedule | <code>String</code> | The cron schedule that will be used to determine when the job will be run. |
 | options.tz | <code>String</code> | The cron timezone (IANA timezone). |
 | options.meta | <code>String</code> | The cron metadata (set of string key value pairs). |
@@ -652,7 +672,6 @@ Read the storage associated to the a webtask
 
 * [CronJob](#CronJob)
     * [new CronJob()](#new_CronJob_new)
-    * [.claims](#CronJob+claims)
     * [.sandbox](#CronJob+sandbox)
     * [.refresh([cb])](#CronJob+refresh) ⇒ <code>Promise</code>
     * [.remove([cb])](#CronJob+remove) ⇒ <code>Promise</code>
@@ -664,16 +683,6 @@ Read the storage associated to the a webtask
 
 ### new CronJob()
 Creates an object representing a CronJob
-
-<a name="CronJob+claims"></a>
-
-### cronJob.claims
-**Kind**: instance property of <code>[CronJob](#CronJob)</code>  
-**Properties**
-
-| Name | Description |
-| --- | --- |
-| claims | The claims embedded in the Webtask's token |
 
 <a name="CronJob+sandbox"></a>
 
@@ -763,8 +772,8 @@ Set the cron job's state
 * [Webtask](#Webtask)
     * [new Webtask()](#new_Webtask_new)
     * [.claims](#Webtask+claims)
-    * [.sandbox](#Webtask+sandbox)
     * [.token](#Webtask+token)
+    * [.sandbox](#Webtask+sandbox)
     * [.meta](#Webtask+meta)
     * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
     * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
@@ -791,16 +800,6 @@ Creates an object representing a Webtask
 | --- | --- |
 | claims | The claims embedded in the Webtask's token |
 
-<a name="Webtask+sandbox"></a>
-
-### webtask.sandbox
-**Kind**: instance property of <code>[Webtask](#Webtask)</code>  
-**Properties**
-
-| Name | Description |
-| --- | --- |
-| sandbox | The {@see Sandbox} instance used to create this Webtask instance |
-
 <a name="Webtask+token"></a>
 
 ### webtask.token
@@ -810,6 +809,16 @@ Creates an object representing a Webtask
 | Name | Description |
 | --- | --- |
 | token | The token associated with this webtask |
+
+<a name="Webtask+sandbox"></a>
+
+### webtask.sandbox
+**Kind**: instance property of <code>[Webtask](#Webtask)</code>  
+**Properties**
+
+| Name | Description |
+| --- | --- |
+| sandbox | The {@see Sandbox} instance used to create this Webtask instance |
 
 <a name="Webtask+meta"></a>
 
