@@ -98,4 +98,21 @@ lab.experiment('CronJob', {parallel: false, timeout: 10000}, function () {
             })
             .nodeify(done);
     });
+
+    lab.test('support listing cron history', (done, onCleanUp) => {
+        var sandbox = Sandbox.init(sandboxParams);
+        var jobName = 'sandboxjs-test';
+
+        sandbox.create(googleTestCodeUrl, { name: jobName })
+            .call('createCronJob', { schedule: '* * * * *' })
+            .tap(job => void onCleanUp(next => job.remove(next)))
+            .then(job => job.getHistory())
+            .tap(history => {
+
+                var found = false;
+
+                expect(history).to.be.an.array();
+            })
+            .nodeify(done);
+    });
 });
