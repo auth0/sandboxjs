@@ -35,7 +35,7 @@
     "lodash.get": "^4.4.2",
     "randexp": "^0.4.0",
     "superagent": "^3.5.2",
-    "webtask-log-stream": "^2.1.0"
+    "webtask-log-stream": "github:auth0/webtask-log-stream#refactor-browser"
   },
   "devDependencies": {
     "code": "^4.0.0",
