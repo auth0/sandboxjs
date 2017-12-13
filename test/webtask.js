@@ -191,4 +191,23 @@ lab.experiment('Webtask instances', { parallel: false, timeout: 10000 }, functio
             })
             .nodeify(done);
     });
+
+    lab.test('can be used to create a webtask having an empty string as code', (done, onCleanUp) => {
+        var sandbox = Sandbox.init(sandboxParams);
+
+        sandbox.create({
+            code: '',
+            name: 'create-empty-code',
+        })
+            .tap(webtask => {
+                onCleanUp(next => void webtask.remove(next));
+
+                return webtask.inspect({ decrypt: true, fetch_code: true, meta: true })
+                    .tap(inspection => {
+                        expect(inspection.code).to.equal('');
+                        expect(inspection.jtn).to.equal(webtask.claims.jtn);
+                    });
+            })
+            .nodeify(done);
+    });
 });

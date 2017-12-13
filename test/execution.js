@@ -43,7 +43,7 @@ lab.experiment('Sandbox instance', {parallel: false, timeout: 10000}, function (
                 expect(webtask.container).to.equal(sandbox.container);
                 expect(webtask.token).to.be.a.string();
                 expect(webtask.url).to.be.a.string();
-                expect(webtask.url).to.match(/^https:\/\//);
+                expect(webtask.url).to.match(/^https?:\/\//);
             })
             .nodeify(done);
     });
@@ -60,7 +60,7 @@ lab.experiment('Sandbox instance', {parallel: false, timeout: 10000}, function (
             expect(webtask.container).to.equal(sandbox.container);
             expect(webtask.token).to.be.a.string();
             expect(webtask.url).to.be.a.string();
-            expect(webtask.url).to.match(/^https:\/\//);
+            expect(webtask.url).to.match(/^https?:\/\//);
 
             done(err);
         });
@@ -82,8 +82,8 @@ lab.experiment('Sandbox instance', {parallel: false, timeout: 10000}, function (
                 onCleanUp(next => webtask1.remove(next));
                 onCleanUp(next => webtask2.remove(next));
 
-                expect(webtask1.url).to.match(/^https:\/\//);
-                expect(webtask2.url).to.match(/^https:\/\//);
+                expect(webtask1.url).to.match(/^https?:\/\//);
+                expect(webtask2.url).to.match(/^https?:\/\//);
                 expect(url1.query.key).to.be.a.string();
                 expect(url2.query.key).to.not.exist();
             })
