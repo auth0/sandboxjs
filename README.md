@@ -388,6 +388,8 @@ Read a named webtask
 | options | <code>Object</code> | Options |
 | [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
 | options.name | <code>String</code> | The name of the webtask. |
+| [options.decrypt] | <code>Boolean</code> | Decrypt the webtask's secrets. |
+| [options.fetch_code] | <code>Boolean</code> | Fetch the code associated with the webtask. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+createWebtask"></a>
@@ -775,6 +777,8 @@ Set the cron job's state
     * [.token](#Webtask+token)
     * [.sandbox](#Webtask+sandbox)
     * [.meta](#Webtask+meta)
+    * [.secrets](#Webtask+secrets)
+    * [.code](#Webtask+code)
     * [.createLogStream(options)](#Webtask+createLogStream) ⇒ <code>Stream</code>
     * [.run(options, [cb])](#Webtask+run) ⇒ <code>Promise</code>
     * [.createCronJob(options, [cb])](#Webtask+createCronJob) ⇒ <code>Promise</code>
@@ -829,6 +833,26 @@ Creates an object representing a Webtask
 | Name | Description |
 | --- | --- |
 | meta | The metadata associated with this webtask |
+
+<a name="Webtask+secrets"></a>
+
+### webtask.secrets
+**Kind**: instance property of <code>[Webtask](#Webtask)</code>  
+**Properties**
+
+| Name | Description |
+| --- | --- |
+| secrets | The secrets associated with this webtask if `decrypt=true` |
+
+<a name="Webtask+code"></a>
+
+### webtask.code
+**Kind**: instance property of <code>[Webtask](#Webtask)</code>  
+**Properties**
+
+| Name | Description |
+| --- | --- |
+| code | The code associated with this webtask if `fetch_code=true` |
 
 <a name="Webtask+createLogStream"></a>
 
