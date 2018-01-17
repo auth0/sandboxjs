@@ -1,6 +1,6 @@
 {
   "name": "sandboxjs",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
