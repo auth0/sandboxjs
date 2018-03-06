@@ -1,6 +1,6 @@
 {
   "name": "sandboxjs",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
@@ -43,5 +43,6 @@
     "jsdoc-to-markdown": "^1.2.0",
     "jsonwebtoken": "^7.3.0",
     "lab": "^14.3.2"
-  }
+  },
+  "types": "./index.d.ts"
 }
