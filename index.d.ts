@@ -8,7 +8,7 @@ interface SandboxOptions {
      */
     container: string,
     /**
-     * [optional] The URL of the webtask cluster. Defaults to the public 'webtask.it.auth0.com' cluster.
+     * [optional] The URL of the webtask cluster. Defaults to the public 'sandbox.auth0-extend.com' cluster.
      */
     url?: string
   }

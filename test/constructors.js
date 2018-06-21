@@ -61,7 +61,7 @@ lab.experiment('Sandbox.fromToken()', function () {
         expect(sandbox).to.be.an.instanceof(Sandbox);
         expect(sandbox.container).to.equal('test');
         expect(sandbox.token).to.equal(token);
-        expect(sandbox.url).to.equal('https://webtask.it.auth0.com');
+        expect(sandbox.url).to.equal('https://sandbox.auth0-extend.com');
         done();
     });
 });
