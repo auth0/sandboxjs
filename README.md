@@ -179,7 +179,7 @@ Create a Sandbox instance from a webtask token
 | --- | --- | --- |
 | token | <code>String</code> | The webtask token from which the Sandbox profile will be derived. |
 | options | <code>Object</code> | The options for creating the Sandbox instance that override the derived values from the token. |
-| [options.url] | <code>String</code> | The url of the webtask cluster. Defaults to the public 'webtask.it.auth0.com' cluster. |
+| [options.url] | <code>String</code> | The url of the webtask cluster. Defaults to the public 'sandbox.auth0-extend.com' cluster. |
 | options.container | <code>String</code> | The container with which this Sandbox instance should be associated. Note that your Webtask token must give you access to that container or all operations will fail. |
 | options.token | <code>String</code> | The Webtask Token. See: https://webtask.io/docs/api_issue. |
 
@@ -194,7 +194,7 @@ Create a Sandbox instance
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options for creating the Sandbox instance. |
-| [options.url] | <code>String</code> | The url of the webtask cluster. Defaults to the public 'webtask.it.auth0.com' cluster. |
+| [options.url] | <code>String</code> | The url of the webtask cluster. Defaults to the public 'sandbox.auth0-extend.com' cluster. |
 | options.container | <code>String</code> | The container with which this Sandbox instance should be associated. Note that your Webtask token must give you access to that container or all operations will fail. |
 | options.token | <code>String</code> | The Webtask Token. See: https://webtask.io/docs/api_issue. |
 
