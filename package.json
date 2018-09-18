@@ -1,6 +1,6 @@
 {
   "name": "sandboxjs",
-  "version": "4.2.2",
+  "version": "5.0.0",
   "description": "Sandbox node.js code",
   "main": "index.js",
   "scripts": {
@@ -25,6 +25,9 @@
     "url": "https://github.com/auth0/sandboxjs/issues"
   },
   "homepage": "https://github.com/auth0/sandboxjs",
+  "engines": {
+    "node": ">=6"
+  },
   "dependencies": {
     "bluebird": "^2.9.34",
     "jwt-decode": "^2.2.0",
@@ -35,7 +38,7 @@
     "lodash.get": "^4.4.2",
     "randexp": "^0.4.0",
     "superagent": "^3.5.2",
-    "webtask-log-stream": "^2.1.0"
+    "webtask-log-stream": "^3.0.0"
   },
   "devDependencies": {
     "code": "^4.0.0",
