@@ -461,6 +461,7 @@ List named webtasks from the webtask container
 | --- | --- | --- |
 | options | <code>Object</code> | Options |
 | [options.container] | <code>String</code> | Set the webtask container. Defaults to the profile's container. |
+| [options.fetch_code] | <code>Boolean</code> | Include the webtask's code in the listing response. |
 | [cb] | <code>function</code> | Optional callback function for node-style callbacks. |
 
 <a name="module_sandboxjs..Sandbox+createCronJob"></a>
