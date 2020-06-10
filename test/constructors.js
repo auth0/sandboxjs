@@ -113,14 +113,13 @@ lab.experiment('Sandbox.init()', function () {
         done();
     });
 
-    lab.test('will fail if token option is missing', function (done) {
-        var test = function () {
-            return Sandbox.init({
-                container: 'foo',
-            });
-        };
+    lab.test('will succeed if token option is omitted', function (done) {
+        var sandbox = Sandbox.init({
+            container: 'foo',
+        });
 
-        expect(test).to.throw();
+        expect(sandbox).to.be.an.instanceof(Sandbox);
+        expect(sandbox.container).to.equal('foo');
 
         done();
     });
