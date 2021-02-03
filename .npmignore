@@ -2,3 +2,4 @@
 .vscode
 jsdoc2md
 test
+.env
